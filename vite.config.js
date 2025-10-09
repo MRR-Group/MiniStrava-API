@@ -14,7 +14,7 @@ export default ({ mode }) => {
       host: true,
       port: 5173,
       strictPort: true,
-      origin: 'https://' + process.env.VITE_DEV_SERVER_DOCKER_HOST_NAME,
+      origin: 'http://' + process.env.VITE_DEV_SERVER_DOCKER_HOST_NAME,
       cors: true, // Allow any origin
       watch: {
         ignored: [
