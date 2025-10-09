@@ -43,6 +43,8 @@ tasks:
       - mmr-add-domain app ${VITE_PORT:-5173}
       - echo "mail → ${DOCKER_MAILPIT_DASHBOARD_HOST_PORT:-8025}"
       - mmr-add-domain mail ${DOCKER_MAILPIT_DASHBOARD_HOST_PORT:-8025}
+      - systemctl --user stop frpc
+      - systemctl --user start frpc
       - echo "done."
 
   vite:
