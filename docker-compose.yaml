@@ -1,0 +1,75 @@
+networks:
+    MiniStravaAPI-dev:
+        driver: bridge
+
+volumes:
+    MiniStravaAPI-postgres-data:
+        name: MiniStravaAPI-postgres-data
+    MiniStravaAPI-redis-data:
+        name: MiniStravaAPI-redis-data
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: environment/.docker/app/Dockerfile
+            target: local
+            args:
+                - INSTALL_XDEBUG=${DOCKER_INSTALL_XDEBUG:-true}
+                - USER_ID=${DOCKER_HOST_USER_ID:-1000}
+        container_name: MiniStravaAPI-app-dev
+        working_dir: /application
+        volumes:
+          - ./environment/local/app/php.ini:/usr/local/etc/php/conf.d/zzz-overrides.ini:ro
+          - ./environment/local/app/php-fpm.conf:/usr/local/etc/php-fpm.d/zzz-overrides.conf:ro
+          - ./environment/local/app/supervisord.conf:/etc/supervisor/custom-supervisord.conf:ro
+          - .:/application
+        ports:
+            - ${DOCKER_APP_HOST_PORT:-63851}:80
+        networks:
+            - MiniStravaAPI-dev
+        restart: unless-stopped
+        depends_on:
+            database:
+                condition: service_healthy
+
+    database:
+        image: postgres:16.3-alpine3.18@sha256:64e18e8fb3e9c9aac89ac590c5dd8306b862478404f76cd9b5f7720d012b4c47
+        container_name: MiniStravaAPI-db-dev
+        environment:
+            - POSTGRES_USER=${DB_USERNAME}
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
+            - POSTGRES_DB=${DB_DATABASE}
+            - PGDATA=/var/lib/postgresql/data
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready --dbname ${DB_DATABASE} --username ${DB_USERNAME}"]
+            interval: 3s
+            timeout: 3s
+            retries: 5
+        ports:
+            - ${DOCKER_DATABASE_HOST_PORT:-63853}:5432
+        volumes:
+            - MiniStravaAPI-postgres-data:/var/lib/postgresql/data
+        networks:
+            - MiniStravaAPI-dev
+        restart: unless-stopped
+
+    mailpit:
+      image: axllent/mailpit:v1.27.1@sha256:986b14ff7b253e62883ea19fd3112806f116e5e2f221e03f12fb81c7312ff532
+      container_name: MiniStravaAPI-mailpit-dev
+      networks:
+        - MiniStravaAPI-dev
+      ports:
+        - ${DOCKER_MAILPIT_DASHBOARD_HOST_PORT:-63854}:8025
+      restart: unless-stopped
+
+    redis:
+        image: redis:7.2.5-alpine3.19@sha256:8f157725f8eee31e65a8d4765f1f986d76aedc1a0503345dfb63a2b1b5a441ee
+        container_name: MiniStravaAPI-redis-dev
+        ports:
+            - ${DOCKER_REDIS_HOST_PORT:-63852}:6379
+        volumes:
+            - MiniStravaAPI-redis-data:/data
+        networks:
+            - MiniStravaAPI-dev
+        restart: unless-stopped
