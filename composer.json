@@ -1,5 +1,5 @@
 {
-    "name": "blumilksoftware/MiniStravaAPI",
+    "name": "mrr/mini-strava-api",
     "type": "project",
     "description": "MiniStravaAPI project.",
     "keywords": ["framework", "laravel"],

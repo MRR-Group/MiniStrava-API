@@ -1,5 +1,5 @@
 {
-    "name": "MiniStravaAPI",
+    "name": "mini-strava-api",
     "private": true,
     "type": "module",
     "scripts": {
