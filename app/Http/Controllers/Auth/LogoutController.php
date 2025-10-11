@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Strava\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 

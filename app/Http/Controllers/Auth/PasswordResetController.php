@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Http\Controllers\Auth;
 
 use Illuminate\Http\JsonResponse;

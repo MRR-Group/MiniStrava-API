@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Notifications;
 
 use Illuminate\Bus\Queueable;
@@ -13,19 +15,20 @@ class ForgotPasswordNotification extends Notification
 {
     use Queueable;
 
-    protected string $code= "";
+    protected string $code = "";
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(public string $email)
-    {
+    public function __construct(
+        public string $email,
+    ) {
         try {
-            $this->code = (string) random_int(100000, 999999);
+            $this->code = (string)random_int(100000, 999999);
         } catch (RandomException $e) {
             report($e);
 
-            abort(500, 'Unable to generate secure reset code.');
+            abort(500, "Unable to generate secure reset code.");
         }
 
         DB::table("password_reset_tokens")->updateOrInsert(
@@ -45,7 +48,7 @@ class ForgotPasswordNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ["mail"];
     }
 
     /**
@@ -68,8 +71,6 @@ class ForgotPasswordNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 }

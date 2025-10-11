@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Http\Controllers\Auth;
 
 use Illuminate\Http\JsonResponse;
@@ -13,17 +15,17 @@ class LoginController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         $credentials = $request->validated();
-        if(!Auth::attempt($credentials)) {
+
+        if (!Auth::attempt($credentials)) {
             return response()->json([], Response::HTTP_FORBIDDEN);
         }
 
         $user = Auth::user();
-        $token = $user->createToken('api-token')->plainTextToken;
+        $token = $user->createToken("api-token")->plainTextToken;
 
         return response()->json([
             "token" => $token,
             "user_id" => $user->id,
         ], Response::HTTP_OK);
-
     }
 }

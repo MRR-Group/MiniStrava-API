@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Http\Controllers\Auth;
 
 use Illuminate\Http\JsonResponse;
@@ -16,7 +18,7 @@ class RegisterController extends Controller
         $validated = $request->validated();
 
         $user = new User($validated);
-        $user->password = Hash::make($validated['password']);
+        $user->password = Hash::make($validated["password"]);
         $user->save();
 
         return response()->json([], Response::HTTP_CREATED);
