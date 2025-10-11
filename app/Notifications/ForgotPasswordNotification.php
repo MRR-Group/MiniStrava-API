@@ -12,9 +12,6 @@ class ForgotPasswordNotification extends Notification
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     */
     public function __construct(
         public string $code,
     ) {}
