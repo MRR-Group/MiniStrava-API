@@ -27,9 +27,6 @@ class ForgotPasswordNotification extends Notification
         return ["mail"];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
     public function toMail(object $notifiable): MailMessage
     {
         return new MailMessage()
