@@ -5,22 +5,28 @@ declare(strict_types=1);
 namespace Strava\Http\Controllers\Auth;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Password;
 use Strava\Actions\Auth\ChangePasswordAction;
+use Strava\Actions\Auth\GenerateResetCodeAction;
 use Strava\Actions\Auth\ResetPasswordAction;
 use Strava\Http\Controllers\Controller;
 use Strava\Http\Requests\Auth\ChangePasswordRequest;
 use Strava\Http\Requests\Auth\ForgotPasswordRequest;
 use Strava\Http\Requests\Auth\ResetPasswordRequest;
+use Strava\Models\User;
+use Strava\Notifications\ForgotPasswordNotification;
 use Symfony\Component\HttpFoundation\Response;
 
 class PasswordController extends Controller
 {
-    public function sendResetEmail(ForgotPasswordRequest $request): JsonResponse
+    public function sendResetEmail(ForgotPasswordRequest $request, GenerateResetCodeAction $generateResetCodeAction): JsonResponse
     {
         $validated = $request->validated();
+        $email = $validated["email"];
 
-        Password::sendResetLink($validated);
+        $code = $generateResetCodeAction->execute($email);
+
+        $user = User::query()->where("email", $email)->first();
+        $user?->notify(new ForgotPasswordNotification($code));
 
         return response()->json([], Response::HTTP_OK);
     }

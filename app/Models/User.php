@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Strava\Notifications\ForgotPasswordNotification;
 
 /**
  * @property int $id
@@ -35,11 +34,6 @@ class User extends Authenticatable
         "password",
         "remember_token",
     ];
-
-    public function sendPasswordResetNotification($token): void
-    {
-        $this->notify(new ForgotPasswordNotification($this->email));
-    }
 
     protected function casts(): array
     {
