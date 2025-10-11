@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Strava\Http\Controllers\Auth;
 
-use Strava\Actions\Auth\ChangePasswordAction;
-use Strava\Actions\Auth\ResetPasswordAction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Password;
+use Strava\Actions\Auth\ChangePasswordAction;
+use Strava\Actions\Auth\ResetPasswordAction;
 use Strava\Http\Controllers\Controller;
 use Strava\Http\Requests\Auth\ChangePasswordRequest;
 use Strava\Http\Requests\Auth\ForgotPasswordRequest;
@@ -40,13 +40,13 @@ class PasswordController extends Controller
         $user = $request->user();
         $validated = $request->validated();
 
-        $currentPassword = $validated['current_password'];
-        $newPassword = $validated['password'];
+        $currentPassword = $validated["current_password"];
+        $newPassword = $validated["password"];
 
         $success = $changePasswordAction->execute(
             $user,
             $currentPassword,
-            $newPassword
+            $newPassword,
         );
 
         return $success ?
