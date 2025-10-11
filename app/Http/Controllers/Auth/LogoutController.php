@@ -16,7 +16,9 @@ class LogoutController extends Controller
         $user = $request->user();
         $token = $user->currentAccessToken();
 
-        $token->delete();
+        if ($token) {
+            $token->delete();
+        }
 
         return response()->json([], Response::HTTP_OK);
     }
