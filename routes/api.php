@@ -14,6 +14,8 @@ Route::middleware("auth:sanctum")->get("/user", fn(Request $request): JsonRespon
 
 Route::middleware(["auth:sanctum"])->group(function (): void {
     Route::post("/auth/logout", [LogoutController::class, "logout"])->name("logout");
+
+    Route::post("/user/change-password", [PasswordController::class, "changePassword"])->name("change-password");
 });
 
 Route::group([], function (): void {

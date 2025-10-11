@@ -10,9 +10,9 @@ use Strava\Models\User;
 
 class ResetPasswordAction
 {
-    public function execute(array $validated): bool
+    public function execute(array $credentials): bool
     {
-        $status = Password::reset($validated, function (User $user, string $password) {
+        $status = Password::reset($credentials, function (User $user, string $password) {
             $user->forceFill([
                 'password' => Hash::make($password),
             ])->setRememberToken(Str::random(60));
