@@ -49,8 +49,8 @@ class PasswordController extends Controller
             $newPassword,
         );
 
-        return $success ?
-            response()->json([], Response::HTTP_OK)
+        return $success
+            ? response()->json([], Response::HTTP_OK)
             : response()->json([], Response::HTTP_FORBIDDEN);
     }
 }
