@@ -20,5 +20,5 @@ jobs:
             cd ${{ secrets.PATH_TO_REPO }}
             git fetch --all
             git reset --hard origin/production
-            make init
-            make run
+            task init
+            task run
