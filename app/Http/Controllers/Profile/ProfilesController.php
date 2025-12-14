@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Http\Controllers\Profile;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Strava\Http\Controllers\Controller;
 use Strava\Http\Resources\UserResource;
@@ -15,23 +16,24 @@ class ProfilesController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $users = User::query()->select([
-            'id',
-            'name',
-            'first_name',
-            'last_name',
-            'birth_date',
-            'height',
-            'weight',
-            'gender',
+            "id",
+            "name",
+            "first_name",
+            "last_name",
+            "birth_date",
+            "height",
+            "weight",
+            "gender",
         ])->paginate(10);
 
         return UserResource::collection($users);
     }
+
     public function show(int $id): JsonResponse
     {
         $user = User::query()->find($id);
 
-        if($user === null) {
+        if ($user === null) {
             return response()->json([], Response::HTTP_NOT_FOUND);
         }
 

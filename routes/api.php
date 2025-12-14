@@ -19,6 +19,8 @@ Route::middleware(["auth:sanctum"])->group(function (): void {
 
     Route::get("/profile", [ProfileController::class, "show"])->name("profile.show");
     Route::patch("/profile", [ProfileController::class, "update"])->name("profile.update");
+    Route::post("/profile/avatar", [ProfileController::class, "changeAvatar"])->name("profile.avatar.update");
+    Route::delete("/profile/avatar", [ProfileController::class, "deleteAvatar"])->name("profile.avatar.delete");
 
     Route::post("/user/change-password", [PasswordController::class, "changePassword"])->name("change-password");
 });
@@ -30,3 +32,4 @@ Route::post("/auth/reset-password", [PasswordController::class, "resetPassword"]
 
 Route::get("/profiles", [ProfilesController::class, "index"])->name("profiles.index");
 Route::get("/profiles/{id}", [ProfilesController::class, "show"])->name("profiles.show");
+Route::get("/profiles/{id}/avatar", [ProfileController::class, "getAvatar"])->name("avatar.show");

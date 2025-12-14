@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -23,6 +25,7 @@ class UserResource extends JsonResource
             "birth_date" => $this->birth_date,
             "height" => $this->height,
             "weight" => $this->weight,
+            "avatar" => $this->avatar,
             "created_at" => $this->created_at,
         ];
     }

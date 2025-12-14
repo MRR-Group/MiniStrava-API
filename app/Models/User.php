@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Strava\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Strava\Enums\Gender;
+use Strava\Helpers\IdenticonHelper;
 
 /**
  * @property int $id
@@ -22,6 +24,7 @@ use Strava\Enums\Gender;
  * @property int|null $height
  * @property string|null $weight
  * @property Gender $gender
+ * @property string $avatar
  * @property Carbon $email_verified_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -53,6 +56,12 @@ class User extends Authenticatable
         return [
             "email_verified_at" => "datetime",
             "password" => "hashed",
+            "gender" => Gender::class,
         ];
+    }
+
+    protected function avatar(): Attribute
+    {
+        return Attribute::get(fn(): string => IdenticonHelper::url($this->id));
     }
 }
