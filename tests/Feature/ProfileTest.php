@@ -186,7 +186,7 @@ class ProfileTest extends TestCase
 
         $this->assertSame(IdenticonHelper::url($user->id), $data["avatar"]);
 
-        $expectedBirth = (string)$user->birth_date;
+        $expectedBirth = $user->birth_date?->toDateString();
         $this->assertSame($expectedBirth, (string)$data["birth_date"]);
 
         $this->assertSame($user->created_at->toJSON(), $data["created_at"]);

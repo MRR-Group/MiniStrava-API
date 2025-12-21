@@ -22,7 +22,7 @@ class UserResource extends JsonResource
             "name" => $this->name,
             "first_name" => $this->first_name,
             "last_name" => $this->last_name,
-            "birth_date" => $this->birth_date,
+            "birth_date" => $this->birth_date?->format("Y-m-d"),
             "height" => $this->height,
             "weight" => $this->weight,
             "avatar" => $this->avatar,
