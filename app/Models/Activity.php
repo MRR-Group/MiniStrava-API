@@ -35,11 +35,10 @@ class Activity extends Model
         'duration_s',
         'distance_m',
         'activityType',
-        'photo_url',
     ];
 
     protected $casts = [
-        'duration_seconds' => 'integer',
+        'duration_s' => 'integer',
         'distance_m' => 'integer',
     ];
 
