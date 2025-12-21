@@ -34,7 +34,6 @@ class Activity extends Model
         'duration_s',
         'distance_m',
         'activityType',
-        'photo_url',
     ];
 
     protected $casts = [
