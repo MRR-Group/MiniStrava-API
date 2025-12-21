@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -34,7 +36,7 @@ class ActivitiesController extends Controller
         return ActivityResource::make($activity);
     }
 
-    public function getPhoto(string $id, GetActivityPhotoAction $getActivityPhotoAction): Response
+    public function getPhoto(int $id, GetActivityPhotoAction $getActivityPhotoAction): Response
     {
         $photo = $getActivityPhotoAction->execute($id);
 
