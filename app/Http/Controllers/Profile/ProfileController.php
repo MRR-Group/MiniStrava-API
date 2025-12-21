@@ -54,21 +54,21 @@ class ProfileController extends Controller
         if ($avatar) {
             return response($avatar)
                 ->header("Content-Type", "image/png")
-                ->header("Cache-Control", "public, max-age=31536000");
+                ->header("Cache-Control", "max-age=31536000, public");
         }
 
         $defaultAvatar = $getDefaultAvatarAction->execute($userId);
 
         return response($defaultAvatar)
             ->header("Content-Type", "image/svg+xml")
-            ->header("Cache-Control", "public, max-age=86400");
+            ->header("Cache-Control", "max-age=86400, public");
     }
 
-    public function deleteAvatar(Request $request, DeleteAvatarAction $deleteProfileAction): UserResource
+    public function deleteAvatar(Request $request, DeleteAvatarAction $deleteAvatarAction): UserResource
     {
         $user = $request->user();
 
-        $deleteProfileAction->execute($user->id);
+        $deleteAvatarAction->execute($user->id);
 
         return UserResource::make($user);
     }
