@@ -19,7 +19,7 @@ Route::middleware(["auth:sanctum"])->group(function (): void {
     Route::post("/auth/logout", [LogoutController::class, "logout"])->name("logout");
 
     Route::post("/activities", [ActivitiesController::class, "store"])->name("activities.store");
-    Route::get("/activities", [ActivitiesController::class, "index"])->name("activities.store");
+    Route::get("/activities", [ActivitiesController::class, "index"])->name("activities.index");
     Route::get("/activities/{id}/photo", [ActivitiesController::class, "getPhoto"])->name("activities.store");
 
     Route::get("/profile", [ProfileController::class, "show"])->name("profile.show");
