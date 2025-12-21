@@ -10,8 +10,8 @@ class ChangeAvatarAction
 {
     public function execute(UploadedFile $uploadedFile, int $userId): bool
     {
-        $uploadedFile->storeAs("", $userId . ".png", "avatars");
+        $stored = $uploadedFile->storeAs("", $userId . ".png", "avatars");
 
-        return true;
+        return $stored !== false;
     }
 }
