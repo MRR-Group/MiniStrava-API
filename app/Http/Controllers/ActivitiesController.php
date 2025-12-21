@@ -1,0 +1,49 @@
+<?php
+
+namespace Strava\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Strava\Actions\Activities\CreateActivityAction;
+use Strava\Actions\Activities\GetActivityPhotoAction;
+use Strava\Actions\Activities\ListActivitiesAction;
+use Strava\Http\Requests\StoreActivityRequest;
+use Strava\Http\Resources\ActivityResource;
+
+class ActivitiesController extends Controller
+{
+    public function index(Request $request, ListActivitiesAction $listActivitiesAction)
+    {
+        $user = $request->user();
+
+        $activities = $listActivitiesAction->execute($user->id);
+
+        return ActivityResource::collection($activities);
+    }
+
+    public function store(StoreActivityRequest $request, CreateActivityAction $createActivityAction): ActivityResource
+    {
+        $validated = $request->validated();
+        $user = $request->user();
+        $photo = $request->file('photo');
+
+        $activity = $createActivityAction->execute($user->id, $validated);
+
+        $photo?->storeAs("", "activity_" . $activity->id . ".png", "activityPhotos");
+
+        return ActivityResource::make($activity);
+    }
+
+    public function getPhoto(string $id, GetActivityPhotoAction $getActivityPhotoAction): Response
+    {
+        $photo = $getActivityPhotoAction->execute($id);
+
+        if ($photo) {
+            return response($photo)
+                ->header("Content-Type", "image/png")
+                ->header("Cache-Control", "max-age=31536000, public");
+        }
+
+        return response()->noContent();
+    }
+}
