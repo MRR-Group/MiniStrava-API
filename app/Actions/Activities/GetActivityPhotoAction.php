@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Storage;
 
 class GetActivityPhotoAction
 {
-    public function execute(int $userId): ?string
+    public function execute(int $activityId): ?string
     {
-        $filename = "activity_" . $userId . ".png";
+        $filename = "activity_" . $activityId . ".png";
 
         if (Storage::disk("activityPhotos")->exists($filename)) {
             return Storage::disk("activityPhotos")->get($filename);
