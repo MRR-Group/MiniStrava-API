@@ -15,16 +15,7 @@ class ProfilesController extends Controller
 {
     public function index(): AnonymousResourceCollection
     {
-        $users = User::query()->select([
-            "id",
-            "name",
-            "first_name",
-            "last_name",
-            "birth_date",
-            "height",
-            "weight",
-            "gender",
-        ])->paginate(10);
+        $users = User::query()->select()->paginate(10);
 
         return UserResource::collection($users);
     }
