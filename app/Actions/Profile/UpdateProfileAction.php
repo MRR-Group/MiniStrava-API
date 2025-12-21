@@ -8,7 +8,7 @@ use Strava\Models\User;
 
 class UpdateProfileAction
 {
-    public function execute(User $user, array $data): ?User
+    public function execute(User $user, array $data): User
     {
         $user->fill($data);
         $user->save();
