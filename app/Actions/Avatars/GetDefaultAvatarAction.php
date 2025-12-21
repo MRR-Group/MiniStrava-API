@@ -9,7 +9,7 @@ use Identicon\Identicon;
 
 class GetDefaultAvatarAction
 {
-    public function execute(int $userId): ?string
+    public function execute(int $userId): string
     {
         $identicon = new Identicon(new SvgGenerator());
 
