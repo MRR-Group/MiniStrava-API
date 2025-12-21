@@ -38,7 +38,7 @@ class Activity extends Model
     ];
 
     protected $casts = [
-        'duration_seconds' => 'integer',
+        'duration_s' => 'integer',
         'distance_m' => 'integer',
     ];
 
