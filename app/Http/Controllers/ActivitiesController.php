@@ -27,7 +27,7 @@ class ActivitiesController extends Controller
     {
         $validated = $request->validated();
         $user = $request->user();
-        $photo = $request->file('photo');
+        $photo = $request->file("photo");
 
         $activity = $createActivityAction->execute($user->id, $validated);
 

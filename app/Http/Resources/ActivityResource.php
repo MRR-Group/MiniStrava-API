@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -15,13 +17,13 @@ class ActivityResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'title' => $this->title,
-            'notes' => $this->notes,
-            'activity_type' => $this->activityType,
-            'duration_s' => $this->duration_s,
-            'distance_m' => $this->distance_m,
-            'photo' => $this->photo,
-            'created_at' => $this->created_at,
+            "title" => $this->title,
+            "notes" => $this->notes,
+            "activity_type" => $this->activityType,
+            "duration_s" => $this->duration_s,
+            "distance_m" => $this->distance_m,
+            "photo" => $this->photo,
+            "created_at" => $this->created_at,
         ];
     }
 }

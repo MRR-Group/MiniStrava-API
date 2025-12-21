@@ -10,8 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
- * Class Activity
- *
  * @property int $id
  * @property int $user_id
  * @property string $title
@@ -29,17 +27,16 @@ use Illuminate\Support\Carbon;
 class Activity extends Model
 {
     protected $fillable = [
-        'user_id',
-        'title',
-        'notes',
-        'duration_s',
-        'distance_m',
-        'activityType',
+        "user_id",
+        "title",
+        "notes",
+        "duration_s",
+        "distance_m",
+        "activityType",
     ];
-
     protected $casts = [
-        'duration_s' => 'integer',
-        'distance_m' => 'integer',
+        "duration_s" => "integer",
+        "distance_m" => "integer",
     ];
 
     public function user(): BelongsTo

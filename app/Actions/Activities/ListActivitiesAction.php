@@ -12,7 +12,7 @@ class ListActivitiesAction
     public function execute(int $userId): LengthAwarePaginator
     {
         return Activity::query()
-            ->where('user_id', $userId)
+            ->where("user_id", $userId)
             ->latest()
             ->paginate(10);
     }
