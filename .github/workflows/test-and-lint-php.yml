@@ -8,7 +8,7 @@ on:
       - '**.php'
       - 'composer.json'
       - 'composer.lock'
-      - 'phpunit.xml'
+      - 'phpunit.xml.ci'
       - '.env.ci'
 
 jobs:
@@ -65,4 +65,4 @@ jobs:
       - name: Execute tests
         run: |
           cp .env.ci .env
-          php artisan test --colors=always
+          vendor/bin/phpunit -c phpunit.xml.ci --colors=always

@@ -31,6 +31,7 @@ tasks:
       - task: _set-app-key
       - cmd: "{{.DOCKER_EXEC_USER}} npm install"
       - cmd: "{{.DOCKER_EXEC_USER}} php artisan migrate"
+      - task: create-test-db
 
   frp:init:
     desc: "Add default FRP domains (api, app, mail)"
@@ -110,9 +111,9 @@ tasks:
       - cmd: "{{.DOCKER_EXEC_USER}} php artisan {{.CLI_ARGS}}"
 
   test:
-    desc: "Run pest tests"
+    desc: "Run tests"
     cmds:
-      - cmd: "{{.DOCKER_EXEC_USER}} vendor/bin/pest {{.CLI_ARGS}}"
+      - cmd: "{{.DOCKER_EXEC_USER}} composer test"
 
   fix:
     desc: "Run fixers"
@@ -135,3 +136,16 @@ tasks:
           echo "APP_KEY is not set. Creating:"
           docker compose exec {{.DOCKER_COMPOSE_APP_CONTAINER}} php artisan key:generate
         fi
+
+  create-test-db:
+    desc: "Create Postgres test database inside db container (if not exists)"
+    vars:
+      DOCKER_COMPOSE_DATABASE_CONTAINER: database
+      DATABASE_USERNAME: '{{default .DB_USERNAME "MiniStravaAPI"}}'
+      TEST_DATABASE_NAME: '{{default .TEST_DB_DATABASE "MiniStravaAPI-test"}}'
+    cmds:
+      - |
+        docker compose exec {{.DOCKER_COMPOSE_DATABASE_CONTAINER}} \
+        bash -lc 'createdb --username={{.DATABASE_USERNAME}} {{.TEST_DATABASE_NAME}} &> /dev/null \
+        && echo "Created database for tests ({{.TEST_DATABASE_NAME}})." \
+        || echo "Database for tests ({{.TEST_DATABASE_NAME}}) exists."'
