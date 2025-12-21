@@ -34,6 +34,12 @@ return [
             "url" => env("APP_URL") . "/storage/avatars",
             "visibility" => "public",
         ],
+        "activityPhotos" => [
+            "driver" => "local",
+            "root" => storage_path("app/public/activityPhotos"),
+            "url" => env("APP_URL") . "/storage/activityPhotos",
+            "visibility" => "public",
+        ],
     ],
     "links" => [
         public_path("storage") => storage_path("app/public"),
