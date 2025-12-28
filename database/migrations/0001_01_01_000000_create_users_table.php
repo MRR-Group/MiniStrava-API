@@ -20,7 +20,7 @@ return new class() extends Migration {
             $table->date("birth_date")->nullable();
             $table->unsignedSmallInteger("height")->nullable();
             $table->decimal("weight", 5, 2)->nullable();
-            $table->enum("gender", ["male", "female"])->default("male");
+            $table->string('gender')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
