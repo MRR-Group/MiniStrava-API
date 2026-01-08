@@ -10,6 +10,7 @@ use Strava\Http\Controllers\Auth\LoginController;
 use Strava\Http\Controllers\Auth\LogoutController;
 use Strava\Http\Controllers\Auth\PasswordController;
 use Strava\Http\Controllers\Auth\RegisterController;
+use Strava\Http\Controllers\Leaderboard\LeaderboardController;
 use Strava\Http\Controllers\Profile\ProfileController;
 use Strava\Http\Controllers\Profile\ProfilesController;
 
@@ -40,3 +41,5 @@ Route::get("/profiles", [ProfilesController::class, "index"])->name("profiles.in
 Route::get("/profiles/{id}", [ProfilesController::class, "show"])->name("profiles.show");
 Route::get("/profiles/{id}/statistics", [ProfilesController::class, "getStatistics"])->name("profiles.statistics.show");
 Route::get("/profiles/{id}/avatar", [ProfileController::class, "getAvatar"])->name("avatar.show");
+
+Route::get("/leaderboard/{type}", [LeaderboardController::class, "show"])->name("leaderboard.show");
