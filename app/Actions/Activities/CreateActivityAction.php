@@ -15,8 +15,8 @@ class CreateActivityAction
         $activity->user_id = $userId;
         $activity->title = $data["title"];
         $activity->notes = $data["notes"] ?? "";
-        $activity->duration_s = (int)$data["duration_s"];
-        $activity->distance_m = (int)$data["distance_m"];
+        $activity->duration_s = $data["duration_s"];
+        $activity->distance_m = $data["distance_m"];
         $activity->activityType = $data["activityType"];
 
         $activity->save();
