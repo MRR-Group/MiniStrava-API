@@ -44,8 +44,15 @@ class ActivitiesController extends Controller
         return ActivityResource::make($activity);
     }
 
-    public function getPhoto(int $id, GetActivityPhotoAction $getActivityPhotoAction): Response
+    public function getPhoto(int $id, Request $request, GetActivityPhotoAction $getActivityPhotoAction): Response
     {
+        $user = $request->user();
+        $activity = Activity::query()->findOrFail($id);
+
+        if($activity->user_id !== $user->id){
+            abort(403);
+        }
+
         $photo = $getActivityPhotoAction->execute($id);
 
         if ($photo) {
