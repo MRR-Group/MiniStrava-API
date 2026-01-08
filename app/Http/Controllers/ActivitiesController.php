@@ -49,7 +49,7 @@ class ActivitiesController extends Controller
         $user = $request->user();
         $activity = Activity::query()->findOrFail($id);
 
-        if($activity->user_id !== $user->id){
+        if ($activity->user_id !== $user->id) {
             abort(403);
         }
 
