@@ -38,4 +38,5 @@ Route::post("/auth/reset-password", [PasswordController::class, "resetPassword"]
 
 Route::get("/profiles", [ProfilesController::class, "index"])->name("profiles.index");
 Route::get("/profiles/{id}", [ProfilesController::class, "show"])->name("profiles.show");
+Route::get("/profiles/{id}/statistics", [ProfilesController::class, "getStatistics"])->name("profiles.statistics.show");
 Route::get("/profiles/{id}/avatar", [ProfileController::class, "getAvatar"])->name("avatar.show");

@@ -6,7 +6,9 @@ namespace Strava\Http\Controllers\Profile;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Strava\Actions\Profile\GetStatisticsByProfileIdAction;
 use Strava\Http\Controllers\Controller;
+use Strava\Http\Resources\StatisticsResource;
 use Strava\Http\Resources\UserResource;
 use Strava\Models\User;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,5 +31,12 @@ class ProfilesController extends Controller
         }
 
         return response()->json(UserResource::make($user), Response::HTTP_OK);
+    }
+
+    public function getStatistics(int $id, GetStatisticsByProfileIdAction $getStatisticsByProfileIdAction): StatisticsResource
+    {
+        $statistics = $getStatisticsByProfileIdAction->execute($id);
+
+        return StatisticsResource::make($statistics);
     }
 }
