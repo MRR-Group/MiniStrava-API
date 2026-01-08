@@ -11,6 +11,7 @@ use Strava\Actions\Activities\GetActivityPhotoAction;
 use Strava\Actions\Activities\ListActivitiesAction;
 use Strava\Http\Requests\StoreActivityRequest;
 use Strava\Http\Resources\ActivityResource;
+use Strava\Models\Activity;
 
 class ActivitiesController extends Controller
 {
@@ -21,6 +22,13 @@ class ActivitiesController extends Controller
         $activities = $listActivitiesAction->execute($user->id);
 
         return ActivityResource::collection($activities);
+    }
+
+    public function show(int $id): ActivityResource
+    {
+        $activity = Activity::query()->findOrFail($id);
+
+        return new ActivityResource($activity);
     }
 
     public function store(StoreActivityRequest $request, CreateActivityAction $createActivityAction): ActivityResource
