@@ -22,7 +22,7 @@ Route::middleware(["auth:sanctum"])->group(function (): void {
     Route::post("/activities", [ActivitiesController::class, "store"])->name("activities.store");
     Route::get("/activities", [ActivitiesController::class, "index"])->name("activities.index");
     Route::get("/activities/{id}", [ActivitiesController::class, "show"])->name("activities.show");
-    Route::get("/activities/{id}/photo", [ActivitiesController::class, "getPhoto"])->name("activities.store");
+    Route::get("/activities/{id}/photo", [ActivitiesController::class, "getPhoto"])->name("activities.photo.show");
 
     Route::get("/profile", [ProfileController::class, "show"])->name("profile.show");
     Route::patch("/profile", [ProfileController::class, "update"])->name("profile.update");
