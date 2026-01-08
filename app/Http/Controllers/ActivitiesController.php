@@ -29,7 +29,7 @@ class ActivitiesController extends Controller
         $user = $request->user();
 
         $activity = Activity::query()
-            ->where('user_id', $user->id)
+            ->where("user_id", $user->id)
             ->findOrFail($id);
 
         return new ActivityResource($activity);
