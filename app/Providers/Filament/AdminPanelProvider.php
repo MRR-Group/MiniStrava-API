@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Providers\Filament;
 
 use Filament\Http\Middleware\Authenticate;
@@ -25,18 +27,18 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->id('admin')
-            ->path('admin')
+            ->id("admin")
+            ->path("admin")
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                "primary" => Color::Amber,
             ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'Strava\Filament\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'Strava\Filament\Pages')
+            ->discoverResources(in: app_path("Filament/Resources"), for: 'Strava\Filament\Resources')
+            ->discoverPages(in: app_path("Filament/Pages"), for: 'Strava\Filament\Pages')
             ->pages([
                 Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'Strava\Filament\Widgets')
+            ->discoverWidgets(in: app_path("Filament/Widgets"), for: 'Strava\Filament\Widgets')
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Filament\Resources\Users;
 
 use BackedEnum;
@@ -19,10 +21,8 @@ use Strava\Models\User;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
-
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
-    protected static ?string $recordTitleAttribute = 'User';
+    protected static ?string $recordTitleAttribute = "User";
 
     public static function form(Schema $schema): Schema
     {
@@ -41,18 +41,16 @@ class UserResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => ListUsers::route('/'),
-            'create' => CreateUser::route('/create'),
-            'view' => ViewUser::route('/{record}'),
-            'edit' => EditUser::route('/{record}/edit'),
+            "index" => ListUsers::route("/"),
+            "create" => CreateUser::route("/create"),
+            "view" => ViewUser::route("/{record}"),
+            "edit" => EditUser::route("/{record}/edit"),
         ];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Filament\Resources\Users\Tables;
 
 use Filament\Actions\BulkActionGroup;
@@ -15,42 +17,40 @@ class UsersTable
     {
         return $table
             ->columns([
-                TextColumn::make('name')
+                TextColumn::make("name")
                     ->searchable(),
-                TextColumn::make('first_name')
+                TextColumn::make("first_name")
                     ->searchable(),
-                TextColumn::make('last_name')
+                TextColumn::make("last_name")
                     ->searchable(),
-                TextColumn::make('email')
-                    ->label('Email address')
+                TextColumn::make("email")
+                    ->label("Email address")
                     ->searchable(),
-                TextColumn::make('email_verified_at')
+                TextColumn::make("email_verified_at")
                     ->dateTime()
                     ->sortable(),
-                TextColumn::make('birth_date')
+                TextColumn::make("birth_date")
                     ->date()
                     ->sortable(),
-                TextColumn::make('height')
+                TextColumn::make("height")
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('weight')
+                TextColumn::make("weight")
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('gender')
+                TextColumn::make("gender")
                     ->badge()
                     ->searchable(),
-                TextColumn::make('created_at')
+                TextColumn::make("created_at")
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
+                TextColumn::make("updated_at")
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),

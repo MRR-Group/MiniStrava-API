@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Filament\Resources\Users\Schemas;
 
 use Filament\Forms\Components\DatePicker;
@@ -15,26 +17,26 @@ class UserForm
     {
         return $schema
             ->components([
-                TextInput::make('name')
+                TextInput::make("name")
                     ->required(),
-                TextInput::make('first_name'),
-                TextInput::make('last_name'),
-                TextInput::make('email')
-                    ->label('Email address')
+                TextInput::make("first_name"),
+                TextInput::make("last_name"),
+                TextInput::make("email")
+                    ->label("Email address")
                     ->email()
                     ->required(),
-                DateTimePicker::make('email_verified_at'),
-                TextInput::make('password')
+                DateTimePicker::make("email_verified_at"),
+                TextInput::make("password")
                     ->password()
                     ->required(),
-                DatePicker::make('birth_date'),
-                TextInput::make('height')
+                DatePicker::make("birth_date"),
+                TextInput::make("height")
                     ->numeric(),
-                TextInput::make('weight')
+                TextInput::make("weight")
                     ->numeric(),
-                Select::make('gender')
+                Select::make("gender")
                     ->options(Gender::class)
-                    ->default('male')
+                    ->default("male")
                     ->required(),
             ]);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Filament\Resources\Activities\Pages;
 
 use Filament\Resources\Pages\CreateRecord;

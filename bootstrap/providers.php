@@ -1,6 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
+use Strava\Providers\AppServiceProvider;
+use Strava\Providers\Filament\AdminPanelProvider;
+
 return [
-    Strava\Providers\AppServiceProvider::class,
-    Strava\Providers\Filament\AdminPanelProvider::class,
+    AppServiceProvider::class,
+    AdminPanelProvider::class,
 ];

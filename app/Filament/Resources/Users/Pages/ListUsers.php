@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Filament\Resources\Users\Pages;
 
 use Filament\Actions\CreateAction;

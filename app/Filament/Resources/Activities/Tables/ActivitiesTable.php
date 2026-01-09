@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Filament\Resources\Activities\Tables;
 
 use Filament\Actions\BulkActionGroup;
@@ -8,7 +10,6 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Strava\Filament\Resources\Activities\Pages\ViewActivity;
 
 class ActivitiesTable
 {
@@ -16,30 +17,28 @@ class ActivitiesTable
     {
         return $table
             ->columns([
-                TextColumn::make('user.name')
+                TextColumn::make("user.name")
                     ->searchable(),
-                TextColumn::make('title')
+                TextColumn::make("title")
                     ->searchable(),
-                TextColumn::make('duration_s')
+                TextColumn::make("duration_s")
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('distance_m')
+                TextColumn::make("distance_m")
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('activityType')
+                TextColumn::make("activityType")
                     ->searchable(),
-                TextColumn::make('created_at')
+                TextColumn::make("created_at")
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
+                TextColumn::make("updated_at")
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),

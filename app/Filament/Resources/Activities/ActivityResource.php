@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Filament\Resources\Activities;
 
 use BackedEnum;
@@ -18,10 +20,8 @@ use Strava\Models\Activity;
 class ActivityResource extends Resource
 {
     protected static ?string $model = Activity::class;
-
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
-    protected static ?string $recordTitleAttribute = 'Activity';
+    protected static ?string $recordTitleAttribute = "Activity";
 
     public static function form(Schema $schema): Schema
     {
@@ -35,18 +35,16 @@ class ActivityResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => ListActivities::route('/'),
-            'create' => CreateActivity::route('/create'),
-            'edit' => EditActivity::route('/{record}/edit'),
-            'view' => Pages\ViewActivity::route('/{record}'),
+            "index" => ListActivities::route("/"),
+            "create" => CreateActivity::route("/create"),
+            "edit" => EditActivity::route("/{record}/edit"),
+            "view" => Pages\ViewActivity::route("/{record}"),
         ];
     }
 

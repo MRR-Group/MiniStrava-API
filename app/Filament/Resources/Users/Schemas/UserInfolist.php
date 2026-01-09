@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Filament\Resources\Users\Schemas;
 
 use Filament\Infolists\Components\TextEntry;
@@ -11,33 +13,33 @@ class UserInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('name'),
-                TextEntry::make('first_name')
-                    ->placeholder('-'),
-                TextEntry::make('last_name')
-                    ->placeholder('-'),
-                TextEntry::make('email')
-                    ->label('Email address'),
-                TextEntry::make('email_verified_at')
+                TextEntry::make("name"),
+                TextEntry::make("first_name")
+                    ->placeholder("-"),
+                TextEntry::make("last_name")
+                    ->placeholder("-"),
+                TextEntry::make("email")
+                    ->label("Email address"),
+                TextEntry::make("email_verified_at")
                     ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('birth_date')
+                    ->placeholder("-"),
+                TextEntry::make("birth_date")
                     ->date()
-                    ->placeholder('-'),
-                TextEntry::make('height')
+                    ->placeholder("-"),
+                TextEntry::make("height")
                     ->numeric()
-                    ->placeholder('-'),
-                TextEntry::make('weight')
+                    ->placeholder("-"),
+                TextEntry::make("weight")
                     ->numeric()
-                    ->placeholder('-'),
-                TextEntry::make('gender')
+                    ->placeholder("-"),
+                TextEntry::make("gender")
                     ->badge(),
-                TextEntry::make('created_at')
+                TextEntry::make("created_at")
                     ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('updated_at')
+                    ->placeholder("-"),
+                TextEntry::make("updated_at")
                     ->dateTime()
-                    ->placeholder('-'),
+                    ->placeholder("-"),
             ]);
     }
 }
