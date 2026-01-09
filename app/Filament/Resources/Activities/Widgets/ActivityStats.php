@@ -50,7 +50,7 @@ class ActivityStats extends StatsOverviewWidget
             ->value("pace_s_per_km");
 
         $bestPaceLabel = $bestPace
-            ? $this->formatPace((int)round($bestPace))
+            ? $this->formatPace((int)$bestPace)
             : "-";
 
         return [
