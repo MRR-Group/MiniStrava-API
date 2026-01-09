@@ -12,6 +12,7 @@ use Strava\Filament\Resources\Activities\Pages\EditActivity;
 use Strava\Filament\Resources\Activities\Pages\ListActivities;
 use Strava\Filament\Resources\Activities\Schemas\ActivityForm;
 use Strava\Filament\Resources\Activities\Tables\ActivitiesTable;
+use Strava\Filament\Resources\Activities\Widgets\ActivityStats;
 use Strava\Models\Activity;
 
 class ActivityResource extends Resource
@@ -46,6 +47,13 @@ class ActivityResource extends Resource
             'create' => CreateActivity::route('/create'),
             'edit' => EditActivity::route('/{record}/edit'),
             'view' => Pages\ViewActivity::route('/{record}'),
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            ActivityStats::class,
         ];
     }
 }
