@@ -28,18 +28,17 @@ class ActivitiesController extends Controller
     }
 
     public function store(
-        StoreActivityRequest     $request,
-        CreateActivityAction     $createActivityAction,
-        StoreActivityPhotoAction $storeActivityPhotoAction
-    ): ActivityResource
-    {
+        StoreActivityRequest $request,
+        CreateActivityAction $createActivityAction,
+        StoreActivityPhotoAction $storeActivityPhotoAction,
+    ): ActivityResource {
         $validated = $request->validated();
         $user = $request->user();
         $photo = $request->file("photo");
 
         $activity = $createActivityAction->execute($user->id, $validated);
 
-        if($photo){
+        if ($photo) {
             $storeActivityPhotoAction->execute($photo, $activity->id);
         }
 
