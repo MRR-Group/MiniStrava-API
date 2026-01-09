@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use Strava\Enums\ActivityType;
 
 /**
  * @property int $id
@@ -37,6 +38,7 @@ class Activity extends Model
     protected $casts = [
         "duration_s" => "integer",
         "distance_m" => "integer",
+        "activityType" => ActivityType::class,
     ];
 
     public function user(): BelongsTo
