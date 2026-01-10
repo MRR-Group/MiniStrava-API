@@ -17,7 +17,7 @@ use Strava\Enums\ActivityType;
  * @property string $notes
  * @property int $duration_s
  * @property int $distance_m
- * @property string $activity_Type
+ * @property string $activity_type
  * @property string $photo
  *
  * @property Carbon $created_at
