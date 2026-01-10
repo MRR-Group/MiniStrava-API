@@ -33,12 +33,12 @@ class Activity extends Model
         "notes",
         "duration_s",
         "distance_m",
-        "activity_Type",
+        "activity_type",
     ];
     protected $casts = [
         "duration_s" => "integer",
         "distance_m" => "integer",
-        "activity_Type" => ActivityType::class,
+        "activity_type" => ActivityType::class,
     ];
 
     public function user(): BelongsTo
