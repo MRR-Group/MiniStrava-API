@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Strava\Http\Controllers\ActivitiesController;
 use Strava\Http\Controllers\Auth\LoginController;
 use Strava\Http\Controllers\Auth\LogoutController;
 use Strava\Http\Controllers\Auth\PasswordController;
@@ -16,6 +17,10 @@ Route::middleware("auth:sanctum")->get("/user", fn(Request $request): JsonRespon
 
 Route::middleware(["auth:sanctum"])->group(function (): void {
     Route::post("/auth/logout", [LogoutController::class, "logout"])->name("logout");
+
+    Route::post("/activities", [ActivitiesController::class, "store"])->name("activities.store");
+    Route::get("/activities", [ActivitiesController::class, "index"])->name("activities.index");
+    Route::get("/activities/{id}/photo", [ActivitiesController::class, "getPhoto"])->name("activities.store");
 
     Route::get("/profile", [ProfileController::class, "show"])->name("profile.show");
     Route::patch("/profile", [ProfileController::class, "update"])->name("profile.update");
