@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Filament\Widgets\Activity\Stats;
 
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
@@ -16,31 +18,31 @@ class ActivityRecordsOverview extends StatsOverviewWidget
     use AppliesActivityFilters;
 
     protected static bool $isDiscovered = false;
-    protected ?string $heading = 'Activity records';
+    protected ?string $heading = "Activity records";
 
     protected function getStats(): array
     {
         [$from, $to] = $this->resolveRange();
 
         $q = Activity::query()
-            ->whereBetween('created_at', [$from, $to]);
+            ->whereBetween("created_at", [$from, $to]);
 
         $q = $this->applyUserFilter($q);
 
-        $maxDistanceM = (int) (clone $q)->max('distance_m');
-        $maxDurationS = (int) (clone $q)->max('duration_s');
+        $maxDistanceM = (int)(clone $q)->max("distance_m");
+        $maxDurationS = (int)(clone $q)->max("duration_s");
 
         $bestPace = (clone $q)
-            ->where('activityType', 'run')
-            ->where('distance_m', '>', 0)
-            ->selectRaw('(duration_s / (distance_m / 1000.0)) as pace_s_per_km')
-            ->orderBy('pace_s_per_km')
-            ->value('pace_s_per_km');
+            ->where("activityType", "run")
+            ->where("distance_m", ">", 0)
+            ->selectRaw("(duration_s / (distance_m / 1000.0)) as pace_s_per_km")
+            ->orderBy("pace_s_per_km")
+            ->value("pace_s_per_km");
 
         return [
-            Stat::make('Longest distance', $maxDistanceM > 0 ? round($maxDistanceM / 1000, 2) . ' km' : '-'),
-            Stat::make('Longest time', $maxDurationS > 0 ? $this->formatDuration($maxDurationS) : '-'),
-            Stat::make('Best pace (run)', $bestPace ? $this->formatPace((int) $bestPace) : '-'),
+            Stat::make("Longest distance", $maxDistanceM > 0 ? round($maxDistanceM / 1000, 2) . " km" : "-"),
+            Stat::make("Longest time", $maxDurationS > 0 ? $this->formatDuration($maxDurationS) : "-"),
+            Stat::make("Best pace (run)", $bestPace ? $this->formatPace((int)$bestPace) : "-"),
         ];
     }
 
@@ -49,7 +51,7 @@ class ActivityRecordsOverview extends StatsOverviewWidget
         $h = intdiv($seconds, 3600);
         $m = intdiv($seconds % 3600, 60);
 
-        return sprintf('%d:%02d', $h, $m);
+        return sprintf("%d:%02d", $h, $m);
     }
 
     private function formatPace(int $secondsPerKm): string
@@ -57,6 +59,6 @@ class ActivityRecordsOverview extends StatsOverviewWidget
         $m = intdiv($secondsPerKm, 60);
         $s = $secondsPerKm % 60;
 
-        return sprintf('%d:%02d min/km', $m, $s);
+        return sprintf("%d:%02d min/km", $m, $s);
     }
 }

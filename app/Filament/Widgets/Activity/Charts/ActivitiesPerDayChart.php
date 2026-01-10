@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Filament\Widgets\Activity\Charts;
 
 use Carbon\Carbon;
@@ -17,9 +19,8 @@ class ActivitiesPerDayChart extends ChartWidget
     use AppliesActivityFilters;
 
     protected static bool $isDiscovered = false;
-
-    protected ?string $heading = 'Activities per day';
     protected static ?int $sort = 12;
+    protected ?string $heading = "Activities per day";
 
     protected function getData(): array
     {
@@ -28,30 +29,30 @@ class ActivitiesPerDayChart extends ChartWidget
         $days = max($from->copy()->startOfDay()->diffInDays($to->copy()->startOfDay()) + 1, 1);
 
         $q = Activity::query()
-            ->whereBetween('created_at', [$from, $to]);
+            ->whereBetween("created_at", [$from, $to]);
 
         $q = $this->applyUserFilter($q);
 
         $rows = $q
-            ->selectRaw('DATE(created_at) as d, COUNT(*) as c')
-            ->groupBy('d')
-            ->orderBy('d')
+            ->selectRaw("DATE(created_at) as d, COUNT(*) as c")
+            ->groupBy("d")
+            ->orderBy("d")
             ->get();
 
         [$labels, $values] = $this->fillDailySeries(
             $rows,
             $from->copy()->startOfDay(),
             $days,
-            valueKey: 'c',
-            mapper: fn ($c) => (int) $c,
+            valueKey: "c",
+            mapper: fn($c) => (int)$c,
         );
 
         return [
-            'labels' => $labels,
-            'datasets' => [
+            "labels" => $labels,
+            "datasets" => [
                 [
-                    'label' => 'count',
-                    'data' => $values,
+                    "label" => "count",
+                    "data" => $values,
                 ],
             ],
         ];
@@ -59,7 +60,7 @@ class ActivitiesPerDayChart extends ChartWidget
 
     protected function getType(): string
     {
-        return 'bar';
+        return "bar";
     }
 
     private function fillDailySeries(
@@ -67,9 +68,9 @@ class ActivitiesPerDayChart extends ChartWidget
         Carbon $from,
         int $days,
         string $valueKey,
-        callable $mapper
+        callable $mapper,
     ): array {
-        $map = $rows->keyBy('d');
+        $map = $rows->keyBy("d");
 
         $labels = [];
         $values = [];
@@ -78,7 +79,7 @@ class ActivitiesPerDayChart extends ChartWidget
             $date = (clone $from)->addDays($i);
             $key = $date->toDateString();
 
-            $labels[] = $date->format('d.m');
+            $labels[] = $date->format("d.m");
             $raw = $map->get($key)?->{$valueKey} ?? 0;
 
             $values[] = $mapper($raw);

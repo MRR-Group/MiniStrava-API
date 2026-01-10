@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Filament\Widgets\Activity\Stats;
 
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
@@ -16,31 +18,30 @@ class MostActiveHourInsight extends StatsOverviewWidget
     use AppliesActivityFilters;
 
     protected static bool $isDiscovered = false;
-
-    protected ?string $heading = 'When people train';
     protected static ?int $sort = 31;
+    protected ?string $heading = "When people train";
 
     protected function getStats(): array
     {
         [$from, $to] = $this->resolveRange();
 
         $q = Activity::query()
-            ->whereBetween('created_at', [$from, $to]);
+            ->whereBetween("created_at", [$from, $to]);
 
         $q = $this->applyUserFilter($q);
 
         $row = $q
-            ->selectRaw('EXTRACT(HOUR FROM created_at) as h, COUNT(*) as c')
-            ->groupBy('h')
-            ->orderByDesc('c')
+            ->selectRaw("EXTRACT(HOUR FROM created_at) as h, COUNT(*) as c")
+            ->groupBy("h")
+            ->orderByDesc("c")
             ->first();
 
-        $hour = $row ? (int) $row->h : null;
-        $count = $row ? (int) $row->c : 0;
+        $hour = $row ? (int)$row->h : null;
+        $count = $row ? (int)$row->c : 0;
 
         return [
-            Stat::make('Most active hour', $hour !== null ? sprintf('%02d:00', $hour) : '-')
-                ->description($count > 0 ? ($count . ' activities') : 'No data'),
+            Stat::make("Most active hour", $hour !== null ? sprintf("%02d:00", $hour) : "-")
+                ->description($count > 0 ? ($count . " activities") : "No data"),
         ];
     }
 }

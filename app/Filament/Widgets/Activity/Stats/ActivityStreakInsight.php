@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Filament\Widgets\Activity\Stats;
 
 use Carbon\Carbon;
@@ -17,9 +19,8 @@ class ActivityStreakInsight extends StatsOverviewWidget
     use AppliesActivityFilters;
 
     protected static bool $isDiscovered = false;
-
-    protected ?string $heading = 'Streak';
     protected static ?int $sort = 32;
+    protected ?string $heading = "Streak";
 
     protected function getStats(): array
     {
@@ -29,29 +30,31 @@ class ActivityStreakInsight extends StatsOverviewWidget
         $toDay = (clone $to)->endOfDay();
 
         $q = Activity::query()
-            ->whereBetween('created_at', [$fromDay, $toDay]);
+            ->whereBetween("created_at", [$fromDay, $toDay]);
 
         $q = $this->applyUserFilter($q);
 
         $dates = $q
-            ->selectRaw('DATE(created_at) as d')
-            ->groupBy('d')
-            ->orderBy('d')
-            ->pluck('d')
-            ->map(fn ($d) => Carbon::parse($d)->toDateString())
+            ->selectRaw("DATE(created_at) as d")
+            ->groupBy("d")
+            ->orderBy("d")
+            ->pluck("d")
+            ->map(fn($d) => Carbon::parse($d)->toDateString())
             ->all();
 
         [$current, $best] = $this->computeStreaks($dates, (clone $toDay)->startOfDay());
 
         return [
-            Stat::make('Current streak', $current > 0 ? $current . ' days' : '-'),
-            Stat::make('Best streak', $best > 0 ? $best . ' days' : '-'),
+            Stat::make("Current streak", $current > 0 ? $current . " days" : "-"),
+            Stat::make("Best streak", $best > 0 ? $best . " days" : "-"),
         ];
     }
 
     private function computeStreaks(array $dateStrings, Carbon $anchorDay): array
     {
-        if (empty($dateStrings)) return [0, 0];
+        if (empty($dateStrings)) {
+            return [0, 0];
+        }
 
         $set = array_flip($dateStrings);
 
@@ -74,7 +77,10 @@ class ActivityStreakInsight extends StatsOverviewWidget
 
         for ($i = 0; $i < 365; $i++) {
             $d = (clone $anchorDay)->subDays($i)->toDateString();
-            if (!isset($set[$d])) break;
+
+            if (!isset($set[$d])) {
+                break;
+            }
             $current++;
         }
 

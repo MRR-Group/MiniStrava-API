@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Filament\Widgets\Activity\Charts;
 
 use Carbon\Carbon;
@@ -17,9 +19,8 @@ class DistancePerDayChart extends ChartWidget
     use AppliesActivityFilters;
 
     protected static bool $isDiscovered = false;
-
-    protected ?string $heading = 'Distance per day';
     protected static ?int $sort = 10;
+    protected ?string $heading = "Distance per day";
 
     protected function getData(): array
     {
@@ -31,30 +32,30 @@ class DistancePerDayChart extends ChartWidget
         $days = max($fromDay->diffInDays($toDay) + 1, 1);
 
         $q = Activity::query()
-            ->whereBetween('created_at', [$from, $to]);
+            ->whereBetween("created_at", [$from, $to]);
 
         $q = $this->applyUserFilter($q);
 
         $rows = $q
-            ->selectRaw('DATE(created_at) as d, SUM(distance_m) as m')
-            ->groupBy('d')
-            ->orderBy('d')
+            ->selectRaw("DATE(created_at) as d, SUM(distance_m) as m")
+            ->groupBy("d")
+            ->orderBy("d")
             ->get();
 
         [$labels, $values] = $this->fillDailySeries(
             $rows,
             $fromDay,
             $days,
-            valueKey: 'm',
-            mapper: fn ($m) => round(((int) $m) / 1000, 2),
+            valueKey: "m",
+            mapper: fn($m) => round(((int)$m) / 1000, 2),
         );
 
         return [
-            'labels' => $labels,
-            'datasets' => [
+            "labels" => $labels,
+            "datasets" => [
                 [
-                    'label' => 'km',
-                    'data' => $values,
+                    "label" => "km",
+                    "data" => $values,
                 ],
             ],
         ];
@@ -62,7 +63,7 @@ class DistancePerDayChart extends ChartWidget
 
     protected function getType(): string
     {
-        return 'line';
+        return "line";
     }
 
     private function fillDailySeries(
@@ -70,9 +71,9 @@ class DistancePerDayChart extends ChartWidget
         Carbon $from,
         int $days,
         string $valueKey,
-        callable $mapper
+        callable $mapper,
     ): array {
-        $map = $rows->keyBy('d');
+        $map = $rows->keyBy("d");
 
         $labels = [];
         $values = [];
@@ -81,7 +82,7 @@ class DistancePerDayChart extends ChartWidget
             $date = (clone $from)->addDays($i);
             $key = $date->toDateString();
 
-            $labels[] = $date->format('d.m');
+            $labels[] = $date->format("d.m");
             $raw = $map->get($key)?->{$valueKey} ?? 0;
 
             $values[] = $mapper($raw);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Filament\Concerns;
 
 use Carbon\Carbon;
@@ -13,25 +15,26 @@ trait ResolvesActivityDateRange
      */
     protected function resolveRange(): array
     {
-        $range = (string)($this->filters['range'] ?? '30');
+        $range = (string)($this->filters["range"] ?? "30");
 
-        if ($range === 'this_week') {
+        if ($range === "this_week") {
             return [Carbon::now()->startOfWeek(), Carbon::now()->endOfDay()];
         }
 
-        if ($range === 'last_week') {
+        if ($range === "last_week") {
             $from = Carbon::now()->startOfWeek()->subWeek();
             $to = Carbon::now()->startOfWeek()->subSecond();
+
             return [$from, $to];
         }
 
-        if ($range === 'custom') {
-            $from = !empty($this->filters['from'])
-                ? Carbon::parse((string)$this->filters['from'])->startOfDay()
+        if ($range === "custom") {
+            $from = !empty($this->filters["from"])
+                ? Carbon::parse((string)$this->filters["from"])->startOfDay()
                 : Carbon::now()->subDays(29)->startOfDay();
 
-            $to = !empty($this->filters['to'])
-                ? Carbon::parse((string)$this->filters['to'])->endOfDay()
+            $to = !empty($this->filters["to"])
+                ? Carbon::parse((string)$this->filters["to"])->endOfDay()
                 : Carbon::now()->endOfDay();
 
             if ($from->greaterThan($to)) {

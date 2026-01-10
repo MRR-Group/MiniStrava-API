@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Filament\Widgets\Activity\Stats;
 
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
@@ -16,29 +18,28 @@ class ActivityAveragesOverview extends StatsOverviewWidget
     use AppliesActivityFilters;
 
     protected static bool $isDiscovered = false;
-
-    protected ?string $heading = 'Activity averages';
+    protected ?string $heading = "Activity averages";
 
     protected function getStats(): array
     {
         [$from, $to] = $this->resolveRange();
 
         $q = Activity::query()
-            ->whereBetween('created_at', [$from, $to]);
+            ->whereBetween("created_at", [$from, $to]);
 
         $q = $this->applyUserFilter($q);
 
         $count = (clone $q)->count();
 
-        $distanceKm = round(((int) (clone $q)->sum('distance_m')) / 1000, 2);
-        $durationS = (int) (clone $q)->sum('duration_s');
+        $distanceKm = round(((int)(clone $q)->sum("distance_m")) / 1000, 2);
+        $durationS = (int)(clone $q)->sum("duration_s");
 
         $avgDistanceKm = $count > 0 ? round($distanceKm / $count, 2) : 0;
-        $avgDurationS = $count > 0 ? (int) round($durationS / $count) : 0;
+        $avgDurationS = $count > 0 ? (int)round($durationS / $count) : 0;
 
         return [
-            Stat::make('Avg distance', $count > 0 ? ($avgDistanceKm . ' km') : '-'),
-            Stat::make('Avg time', $count > 0 ? $this->formatDuration($avgDurationS) : '-'),
+            Stat::make("Avg distance", $count > 0 ? ($avgDistanceKm . " km") : "-"),
+            Stat::make("Avg time", $count > 0 ? $this->formatDuration($avgDurationS) : "-"),
         ];
     }
 
@@ -47,6 +48,6 @@ class ActivityAveragesOverview extends StatsOverviewWidget
         $h = intdiv($seconds, 3600);
         $m = intdiv($seconds % 3600, 60);
 
-        return sprintf('%d:%02d', $h, $m);
+        return sprintf("%d:%02d", $h, $m);
     }
 }

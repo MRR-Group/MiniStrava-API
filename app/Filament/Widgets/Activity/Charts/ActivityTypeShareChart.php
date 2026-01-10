@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strava\Filament\Widgets\Activity\Charts;
 
 use Filament\Widgets\ChartWidget;
@@ -15,31 +17,30 @@ class ActivityTypeShareChart extends ChartWidget
     use AppliesActivityFilters;
 
     protected static bool $isDiscovered = false;
-
-    protected ?string $heading = 'Activity types';
     protected static ?int $sort = 13;
+    protected ?string $heading = "Activity types";
 
     protected function getData(): array
     {
         [$from, $to] = $this->resolveRange();
 
         $q = Activity::query()
-            ->whereBetween('created_at', [$from, $to]);
+            ->whereBetween("created_at", [$from, $to]);
 
         $q = $this->applyUserFilter($q);
 
         $rows = $q
             ->selectRaw('"activityType" as t, COUNT(*) as c')
-            ->groupBy('t')
-            ->orderByDesc('c')
+            ->groupBy("t")
+            ->orderByDesc("c")
             ->get();
 
         return [
-            'labels' => $rows->pluck('t')->map(fn ($t) => $t ?: 'unknown')->all(),
-            'datasets' => [
+            "labels" => $rows->pluck("t")->map(fn($t) => $t ?: "unknown")->all(),
+            "datasets" => [
                 [
-                    'label' => 'count',
-                    'data' => $rows->pluck('c')->map(fn ($c) => (int) $c)->all(),
+                    "label" => "count",
+                    "data" => $rows->pluck("c")->map(fn($c) => (int)$c)->all(),
                 ],
             ],
         ];
@@ -47,6 +48,6 @@ class ActivityTypeShareChart extends ChartWidget
 
     protected function getType(): string
     {
-        return 'doughnut';
+        return "doughnut";
     }
 }
