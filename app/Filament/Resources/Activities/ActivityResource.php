@@ -47,11 +47,4 @@ class ActivityResource extends Resource
             "view" => Pages\ViewActivity::route("/{record}"),
         ];
     }
-
-    public static function getWidgets(): array
-    {
-        return [
-            ActivityStats::class,
-        ];
-    }
 }
