@@ -19,7 +19,7 @@ class ActivityResource extends JsonResource
         return [
             "title" => $this->title,
             "notes" => $this->notes,
-            "activity_type" => $this->activityType,
+            "activity_type" => $this->activity_Type,
             "duration_s" => $this->duration_s,
             "distance_m" => $this->distance_m,
             "photo" => $this->photo,

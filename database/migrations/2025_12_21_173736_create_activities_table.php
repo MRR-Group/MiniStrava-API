@@ -17,7 +17,7 @@ return new class() extends Migration {
             $table->text("notes");
             $table->integer("duration_s");
             $table->integer("distance_m");
-            $table->string("activityType");
+            $table->string("activity_Type");
 
             $table->timestamps();
         });
