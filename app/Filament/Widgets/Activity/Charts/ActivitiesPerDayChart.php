@@ -26,7 +26,7 @@ class ActivitiesPerDayChart extends ChartWidget
     {
         [$from, $to] = $this->resolveRange();
 
-        $days = max($from->copy()->startOfDay()->diffInDays($to->copy()->startOfDay()) + 1, 1);
+        $days = (int)max($from->copy()->startOfDay()->diffInDays($to->copy()->startOfDay()) + 1, 1);
 
         $q = Activity::query()
             ->whereBetween("created_at", [$from, $to]);

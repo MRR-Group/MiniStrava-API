@@ -29,7 +29,7 @@ class DistancePerDayChart extends ChartWidget
         $fromDay = $from->copy()->startOfDay();
         $toDay = $to->copy()->startOfDay();
 
-        $days = max($fromDay->diffInDays($toDay) + 1, 1);
+        $days = (int)max($fromDay->diffInDays($toDay) + 1, 1);
 
         $q = Activity::query()
             ->whereBetween("created_at", [$from, $to]);
