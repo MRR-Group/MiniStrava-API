@@ -35,8 +35,8 @@ class GetStatisticsByProfileIdAction
             "totalDistanceM" => $totalDistanceM,
             "totalDurationS" => $totalDurationS,
 
-            "avgDistance_M" => (float)$statistics->avg_distance_m,
-            "avgDuration_S" => (float)$statistics->avg_duration_s,
+            "avgDistanceM" => (float)$statistics->avg_distance_m,
+            "avgDurationS" => (float)$statistics->avg_duration_s,
 
             "avgSpeedMps" => $avgSpeedMps,
             "avgSpeedKph" => $avgSpeedKph,
