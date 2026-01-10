@@ -6,7 +6,9 @@ namespace Strava\Filament\Widgets\Activity\Charts;
 
 use Filament\Widgets\ChartWidget;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
+use Strava\Filament\Concerns\AppliesActivityDistanceFilter;
 use Strava\Filament\Concerns\AppliesActivityFilters;
+use Strava\Filament\Concerns\AppliesActivityTypeFilter;
 use Strava\Filament\Concerns\ResolvesActivityDateRange;
 use Strava\Models\Activity;
 
@@ -15,6 +17,8 @@ class ActivityTypeShareChart extends ChartWidget
     use InteractsWithPageFilters;
     use ResolvesActivityDateRange;
     use AppliesActivityFilters;
+    use AppliesActivityDistanceFilter;
+    use AppliesActivityTypeFilter;
 
     protected static bool $isDiscovered = false;
     protected static ?int $sort = 13;
@@ -28,6 +32,8 @@ class ActivityTypeShareChart extends ChartWidget
             ->whereBetween("created_at", [$from, $to]);
 
         $q = $this->applyUserFilter($q);
+        $q = $this->applyActivityDistanceFilter($q);
+        $q = $this->applyActivityTypeFilter($q);
 
         $rows = $q
             ->selectRaw('"activityType" as t, COUNT(*) as c')

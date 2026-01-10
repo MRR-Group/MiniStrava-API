@@ -9,7 +9,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\TableWidget;
+use Strava\Filament\Concerns\AppliesActivityDistanceFilter;
 use Strava\Filament\Concerns\AppliesActivityFilters;
+use Strava\Filament\Concerns\AppliesActivityTypeFilter;
 use Strava\Filament\Concerns\ResolvesActivityDateRange;
 use Strava\Models\Activity;
 
@@ -18,6 +20,8 @@ class WeeklyTopActivities extends TableWidget
     use InteractsWithPageFilters;
     use ResolvesActivityDateRange;
     use AppliesActivityFilters;
+    use AppliesActivityDistanceFilter;
+    use AppliesActivityTypeFilter;
 
     protected static bool $isDiscovered = false;
     protected static ?string $heading = "Top activities";
@@ -31,6 +35,8 @@ class WeeklyTopActivities extends TableWidget
             ->whereBetween("created_at", [$from, $to]);
 
         $q = $this->applyUserFilter($q);
+        $q = $this->applyActivityDistanceFilter($q);
+        $q = $this->applyActivityTypeFilter($q);
 
         return $table
             ->query($q)

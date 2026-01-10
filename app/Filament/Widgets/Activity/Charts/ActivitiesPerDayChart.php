@@ -8,7 +8,9 @@ use Carbon\Carbon;
 use Filament\Widgets\ChartWidget;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Illuminate\Support\Collection;
+use Strava\Filament\Concerns\AppliesActivityDistanceFilter;
 use Strava\Filament\Concerns\AppliesActivityFilters;
+use Strava\Filament\Concerns\AppliesActivityTypeFilter;
 use Strava\Filament\Concerns\ResolvesActivityDateRange;
 use Strava\Models\Activity;
 
@@ -17,6 +19,8 @@ class ActivitiesPerDayChart extends ChartWidget
     use InteractsWithPageFilters;
     use ResolvesActivityDateRange;
     use AppliesActivityFilters;
+    use AppliesActivityDistanceFilter;
+    use AppliesActivityTypeFilter;
 
     protected static bool $isDiscovered = false;
     protected static ?int $sort = 12;
@@ -32,6 +36,8 @@ class ActivitiesPerDayChart extends ChartWidget
             ->whereBetween("created_at", [$from, $to]);
 
         $q = $this->applyUserFilter($q);
+        $q = $this->applyActivityDistanceFilter($q);
+        $q = $this->applyActivityTypeFilter($q);
 
         $rows = $q
             ->selectRaw("DATE(created_at) as d, COUNT(*) as c")

@@ -7,7 +7,9 @@ namespace Strava\Filament\Widgets\Activity\Stats;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Strava\Filament\Concerns\AppliesActivityDistanceFilter;
 use Strava\Filament\Concerns\AppliesActivityFilters;
+use Strava\Filament\Concerns\AppliesActivityTypeFilter;
 use Strava\Filament\Concerns\ResolvesActivityDateRange;
 use Strava\Models\Activity;
 
@@ -16,6 +18,8 @@ class WeekVsLastWeekInsight extends StatsOverviewWidget
     use InteractsWithPageFilters;
     use ResolvesActivityDateRange;
     use AppliesActivityFilters;
+    use AppliesActivityDistanceFilter;
+    use AppliesActivityTypeFilter;
 
     protected static bool $isDiscovered = false;
     protected static ?int $sort = 30;
@@ -34,7 +38,11 @@ class WeekVsLastWeekInsight extends StatsOverviewWidget
         $lastQ = Activity::query()->whereBetween("created_at", [$prevFrom, $prevTo]);
 
         $thisQ = $this->applyUserFilter($thisQ);
+        $thisQ = $this->applyActivityDistanceFilter($thisQ);
+        $thisQ = $this->applyActivityTypeFilter($thisQ);
         $lastQ = $this->applyUserFilter($lastQ);
+        $lastQ = $this->applyActivityDistanceFilter($lastQ);
+        $lastQ = $this->applyActivityTypeFilter($lastQ);
 
         $thisCount = (clone $thisQ)->count();
         $lastCount = (clone $lastQ)->count();

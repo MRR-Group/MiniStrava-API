@@ -7,7 +7,9 @@ namespace Strava\Filament\Widgets\Activity\Stats;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Strava\Filament\Concerns\AppliesActivityDistanceFilter;
 use Strava\Filament\Concerns\AppliesActivityFilters;
+use Strava\Filament\Concerns\AppliesActivityTypeFilter;
 use Strava\Filament\Concerns\ResolvesActivityDateRange;
 use Strava\Models\Activity;
 
@@ -16,6 +18,8 @@ class ActivityAveragesOverview extends StatsOverviewWidget
     use InteractsWithPageFilters;
     use ResolvesActivityDateRange;
     use AppliesActivityFilters;
+    use AppliesActivityDistanceFilter;
+    use AppliesActivityTypeFilter;
 
     protected static bool $isDiscovered = false;
     protected ?string $heading = "Activity averages";
@@ -28,6 +32,8 @@ class ActivityAveragesOverview extends StatsOverviewWidget
             ->whereBetween("created_at", [$from, $to]);
 
         $q = $this->applyUserFilter($q);
+        $q = $this->applyActivityDistanceFilter($q);
+        $q = $this->applyActivityTypeFilter($q);
 
         $count = (clone $q)->count();
 

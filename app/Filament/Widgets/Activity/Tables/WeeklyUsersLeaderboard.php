@@ -10,7 +10,9 @@ use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\TableWidget;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Strava\Filament\Concerns\AppliesActivityDistanceFilter;
 use Strava\Filament\Concerns\AppliesActivityFilters;
+use Strava\Filament\Concerns\AppliesActivityTypeFilter;
 use Strava\Filament\Concerns\ResolvesActivityDateRange;
 use Strava\Models\User;
 
@@ -19,6 +21,8 @@ class WeeklyUsersLeaderboard extends TableWidget
     use InteractsWithPageFilters;
     use ResolvesActivityDateRange;
     use AppliesActivityFilters;
+    use AppliesActivityDistanceFilter;
+    use AppliesActivityTypeFilter;
 
     protected static bool $isDiscovered = false;
     protected static ?string $heading = "Leaderboard users";
@@ -62,6 +66,8 @@ class WeeklyUsersLeaderboard extends TableWidget
             ]);
 
         $userId = $this->userIdFilter();
+        $q = $this->applyActivityDistanceFilter($q);
+        $q = $this->applyActivityTypeFilter($q);
 
         if ($userId) {
             $q->where("users.id", $userId);
