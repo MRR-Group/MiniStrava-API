@@ -14,10 +14,10 @@ return new class() extends Migration {
             $table->foreignId("user_id")->constrained()->cascadeOnDelete();
 
             $table->string("title");
-            $table->text("notes");
+            $table->text("notes")->nullable();
             $table->integer("duration_s");
             $table->integer("distance_m");
-            $table->enum("activityType", ["run", "ride", "walk", "other"]);
+            $table->string("activity_type");
 
             $table->timestamps();
         });
