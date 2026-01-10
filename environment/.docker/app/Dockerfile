@@ -22,10 +22,15 @@ RUN apt-get update \
         libzip-dev \
         supervisor \
         libpq-dev \
+        libicu-dev \
     && docker-php-ext-install \
         pdo_pgsql \
+        intl \
+        zip \
     && pecl install redis \
-    && docker-php-ext-enable redis
+    && docker-php-ext-enable redis \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY ./environment/.docker/app/entrypoint.sh /entrypoint.sh
 COPY ./environment/.docker/app/nginx.conf /etc/nginx/nginx.conf
