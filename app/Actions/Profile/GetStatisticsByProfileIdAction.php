@@ -27,7 +27,7 @@ class GetStatisticsByProfileIdAction
         $totalDurationS = $statistics->total_duration_s;
 
         $avgSpeedMps = $totalDurationS > 0 ? $totalDistanceM / $totalDurationS : 0.0;
-        $avgSpeedKmh = $avgSpeedMps * 3.6;
+        $avgSpeedKph = $avgSpeedMps * 3.6;
         $avgPaceSecPerKm = $totalDistanceM > 0 ? ($totalDurationS / ($totalDistanceM / 1000)) : 0.0;
 
         return [
@@ -39,7 +39,7 @@ class GetStatisticsByProfileIdAction
             "avgDuration_S" => (float)$statistics->avg_duration_s,
 
             "avgSpeedMps" => $avgSpeedMps,
-            "avgSpeedKps" => $avgSpeedKmh,
+            "avgSpeedKph" => $avgSpeedKph,
             "avgPaceSecPerKm" => $avgPaceSecPerKm,
 
             "longestDistanceM" => (int)$statistics->longest_distance_m,

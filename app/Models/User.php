@@ -52,6 +52,9 @@ class User extends Authenticatable
         "remember_token",
     ];
 
+    /**
+     * @return HasMany<Activity>
+     */
     public function activities(): HasMany
     {
         return $this->hasMany(Activity::class);

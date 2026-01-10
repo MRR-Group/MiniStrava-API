@@ -25,7 +25,7 @@ class StatisticsResource extends JsonResource
             "avgDuration_S" => $this["avgDuration_S"],
 
             "avgSpeedMps" => $this["avgSpeedMps"],
-            "avgSpeedKps" => $this["avgSpeedKps"],
+            "avgSpeedKph" => $this["avgSpeedKph"],
             "avgPaceSecPerKm" => $this["avgPaceSecPerKm"],
 
             "longestDistanceM" => $this["longestDistanceM"],
