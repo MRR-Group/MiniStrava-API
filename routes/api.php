@@ -10,6 +10,7 @@ use Strava\Http\Controllers\Auth\LoginController;
 use Strava\Http\Controllers\Auth\LogoutController;
 use Strava\Http\Controllers\Auth\PasswordController;
 use Strava\Http\Controllers\Auth\RegisterController;
+use Strava\Http\Controllers\Leaderboard\LeaderboardController;
 use Strava\Http\Controllers\Profile\ProfileController;
 use Strava\Http\Controllers\Profile\ProfilesController;
 
@@ -21,7 +22,7 @@ Route::middleware(["auth:sanctum"])->group(function (): void {
     Route::post("/activities", [ActivitiesController::class, "store"])->name("activities.store");
     Route::get("/activities", [ActivitiesController::class, "index"])->name("activities.index");
     Route::get("/activities/{id}", [ActivitiesController::class, "show"])->name("activities.show");
-    Route::get("/activities/{id}/photo", [ActivitiesController::class, "getPhoto"])->name("activities.store");
+    Route::get("/activities/{id}/photo", [ActivitiesController::class, "getPhoto"])->name("activities.photo.show");
 
     Route::get("/profile", [ProfileController::class, "show"])->name("profile.show");
     Route::patch("/profile", [ProfileController::class, "update"])->name("profile.update");
@@ -40,3 +41,5 @@ Route::get("/profiles", [ProfilesController::class, "index"])->name("profiles.in
 Route::get("/profiles/{id}", [ProfilesController::class, "show"])->name("profiles.show");
 Route::get("/profiles/{id}/statistics", [ProfilesController::class, "getStatistics"])->name("profiles.statistics.show");
 Route::get("/profiles/{id}/avatar", [ProfileController::class, "getAvatar"])->name("avatar.show");
+
+Route::get("/leaderboard/{type}", [LeaderboardController::class, "show"])->name("leaderboard.show");
