@@ -17,7 +17,7 @@ use Strava\Enums\ActivityType;
  * @property string $notes
  * @property int $duration_s
  * @property int $distance_m
- * @property string $activityType
+ * @property string $activity_type
  * @property string $photo
  *
  * @property Carbon $created_at
@@ -33,12 +33,12 @@ class Activity extends Model
         "notes",
         "duration_s",
         "distance_m",
-        "activityType",
+        "activity_type",
     ];
     protected $casts = [
         "duration_s" => "integer",
         "distance_m" => "integer",
-        "activityType" => ActivityType::class,
+        "activity_type" => ActivityType::class,
     ];
 
     /**

@@ -17,7 +17,7 @@ return new class() extends Migration {
             $table->text("notes");
             $table->integer("duration_s");
             $table->integer("distance_m");
-            $table->enum("activityType", ["run", "ride", "walk", "other"]);
+            $table->string("activity_type");
 
             $table->timestamps();
         });
