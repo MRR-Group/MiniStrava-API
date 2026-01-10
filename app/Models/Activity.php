@@ -41,6 +41,9 @@ class Activity extends Model
         "activity_type" => ActivityType::class,
     ];
 
+    /**
+     * @return BelongsTo<User>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

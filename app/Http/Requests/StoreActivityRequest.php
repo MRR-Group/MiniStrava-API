@@ -32,7 +32,7 @@ class StoreActivityRequest extends FormRequest
             "duration_s" => ["required", "integer", "min:1"],
             "distance_m" => ["required", "integer", "min:1"],
             "activity_type" => ["required", new Enum(ActivityType::class)],
-            "photo" => ["required", "image", "mimes:png", "max:4096"],
+            "photo" => ["image", "mimes:png", "max:4096"],
         ];
     }
 }

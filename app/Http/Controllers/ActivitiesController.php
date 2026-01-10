@@ -27,6 +27,17 @@ class ActivitiesController extends Controller
         return ActivityResource::collection($activities);
     }
 
+    public function show(int $id, Request $request): ActivityResource
+    {
+        $user = $request->user();
+
+        $activity = Activity::query()
+            ->where("user_id", $user->id)
+            ->findOrFail($id);
+
+        return new ActivityResource($activity);
+    }
+
     public function store(
         StoreActivityRequest $request,
         CreateActivityAction $createActivityAction,
