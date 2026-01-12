@@ -16,28 +16,28 @@ class ActiveUsersPerDayChart extends ChartWidget
 
     protected static bool $isDiscovered = false;
     protected static ?int $sort = 21;
-    protected ?string $heading = 'Active users per day';
+    protected ?string $heading = "Active users per day";
 
     protected function getData(): array
     {
         [$from, $to] = $this->resolveRange();
 
         $rows = Activity::query()
-            ->selectRaw('DATE(created_at) as d, COUNT(DISTINCT user_id) as c')
-            ->whereBetween('created_at', [$from, $to])
-            ->groupBy('d')
-            ->orderBy('d')
+            ->selectRaw("DATE(created_at) as d, COUNT(DISTINCT user_id) as c")
+            ->whereBetween("created_at", [$from, $to])
+            ->groupBy("d")
+            ->orderBy("d")
             ->get();
 
-        $labels = $rows->pluck('d')->map(fn ($d) => (string) $d)->all();
-        $data = $rows->pluck('c')->map(fn ($c) => (int) $c)->all();
+        $labels = $rows->pluck("d")->map(fn($d) => (string)$d)->all();
+        $data = $rows->pluck("c")->map(fn($c) => (int)$c)->all();
 
         return [
-            'labels' => $labels,
-            'datasets' => [
+            "labels" => $labels,
+            "datasets" => [
                 [
-                    'label' => 'Active users',
-                    'data' => $data,
+                    "label" => "Active users",
+                    "data" => $data,
                 ],
             ],
         ];
@@ -45,6 +45,6 @@ class ActiveUsersPerDayChart extends ChartWidget
 
     protected function getType(): string
     {
-        return 'line';
+        return "line";
     }
 }

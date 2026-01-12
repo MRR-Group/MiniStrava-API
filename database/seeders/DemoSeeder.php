@@ -31,24 +31,24 @@ class DemoSeeder extends Seeder
                 ["name" => "Daria", "email" => "daria@test.com"],
                 ["name" => "Ewa", "email" => "ewa@test.com"],
                 ["name" => "Filip", "email" => "filip@test.com"],
-            ])->map(fn ($u) => User::query()->create([
+            ])->map(fn($u) => User::query()->create([
                 "name" => $u["name"],
                 "email" => $u["email"],
                 "password" => Hash::make("password"),
             ]));
 
             $activityTypes = [
-                'run' => [
-                    'distance' => [3000, 12000],
-                    'duration' => [900, 3600],
+                "run" => [
+                    "distance" => [3000, 12000],
+                    "duration" => [900, 3600],
                 ],
-                'walk' => [
-                    'distance' => [1000, 6000],
-                    'duration' => [900, 5400],
+                "walk" => [
+                    "distance" => [1000, 6000],
+                    "duration" => [900, 5400],
                 ],
-                'ride' => [
-                    'distance' => [8000, 60000],
-                    'duration' => [1200, 7200],
+                "ride" => [
+                    "distance" => [8000, 60000],
+                    "duration" => [1200, 7200],
                 ],
             ];
 
@@ -59,7 +59,6 @@ class DemoSeeder extends Seeder
 
                 foreach ($activeUsers as $user) {
                     foreach (range(1, rand(1, 2)) as $n) {
-
                         $type = collect(array_keys($activityTypes))->random();
                         $cfg = $activityTypes[$type];
 
@@ -67,8 +66,8 @@ class DemoSeeder extends Seeder
                             "user_id" => $user->id,
                             "title" => ucfirst($type),
                             "notes" => "Demo {$type}",
-                            "distance_m" => rand($cfg['distance'][0], $cfg['distance'][1]),
-                            "duration_s" => rand($cfg['duration'][0], $cfg['duration'][1]),
+                            "distance_m" => rand($cfg["distance"][0], $cfg["distance"][1]),
+                            "duration_s" => rand($cfg["duration"][0], $cfg["duration"][1]),
                             "activity_type" => $type,
                             "created_at" => $day->copy()->addMinutes(rand(0, 1000)),
                         ]);

@@ -20,11 +20,11 @@ class UserStatistics extends Dashboard
 {
     use HasFiltersForm;
 
-    protected static string|null|BackedEnum $navigationIcon = 'heroicon-o-chart-bar';
-    protected static ?string $navigationLabel = 'User statistics';
+    protected static string|null|BackedEnum $navigationIcon = "heroicon-o-chart-bar";
+    protected static ?string $navigationLabel = "User statistics";
     protected static string|null|UnitEnum $navigationGroup = null;
     protected static ?int $navigationSort = 30;
-    protected static string $routePath = 'user-stats';
+    protected static string $routePath = "user-stats";
     protected static bool $filtersFormInHeader = true;
 
     public function filtersForm(Schema $schema): Schema
@@ -34,7 +34,6 @@ class UserStatistics extends Dashboard
                 ->columnSpanFull()
                 ->schema([
                     Grid::make(6)->schema([
-
                         Select::make("range")
                             ->label("Range")
                             ->options([
