@@ -14,7 +14,7 @@ trait AppliesActivityTypeFilter
         $type = $filters["activity_type"] ?? null;
 
         if (!empty($type)) {
-            $q->where("activityType", $type);
+            $q->where("activity_type", $type);
         }
 
         return $q;

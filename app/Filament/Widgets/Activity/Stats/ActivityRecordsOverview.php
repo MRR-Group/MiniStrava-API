@@ -39,7 +39,7 @@ class ActivityRecordsOverview extends StatsOverviewWidget
         $maxDurationS = (int)(clone $q)->max("duration_s");
 
         $bestPace = (clone $q)
-            ->where("activityType", "run")
+            ->where("activity_type", "run")
             ->where("distance_m", ">", 0)
             ->selectRaw("(duration_s / (distance_m / 1000.0)) as pace_s_per_km")
             ->orderBy("pace_s_per_km")

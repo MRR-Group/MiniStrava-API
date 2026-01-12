@@ -36,7 +36,7 @@ class ActivityTypeShareChart extends ChartWidget
         $q = $this->applyActivityTypeFilter($q);
 
         $rows = $q
-            ->selectRaw('"activityType" as t, COUNT(*) as c')
+            ->selectRaw('"activity_type" as t, COUNT(*) as c')
             ->groupBy("t")
             ->orderByDesc("c")
             ->get();
