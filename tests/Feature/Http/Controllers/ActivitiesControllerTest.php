@@ -22,7 +22,7 @@ class ActivitiesControllerTest extends TestCase
         $res->assertUnauthorized();
     }
 
-    public function testIndexReturnsOnlyCurrentUserActivitiesSortedLatestAndPaginated(): void
+    public function testIndexReturnsOnlyCurrentUserActivities(): void
     {
         $user = User::factory()->create(["email" => "u1@gmail.com"]);
         $other = User::factory()->create(["email" => "u2@gmail.com"]);
@@ -67,13 +67,54 @@ class ActivitiesControllerTest extends TestCase
             "data" => [
                 ["id", "title", "notes", "activity_type", "duration_s", "distance_m", "photo", "created_at"],
             ],
-            "links",
-            "meta",
         ]);
 
         $data = $res->json("data");
 
         $this->assertCount(2, $data);
+
+        $titles = array_column($data, "title");
+        $this->assertContains("New", $titles);
+        $this->assertContains("Old", $titles);
+        $this->assertNotContains("Other", $titles);
+    }
+
+    public function testIndexCanSortByCreatedAtDesc(): void
+    {
+        $user = User::factory()->create(["email" => "u1@gmail.com"]);
+
+        Activity::query()->insert([
+            [
+                "user_id" => $user->id,
+                "title" => "Old",
+                "notes" => null,
+                "duration_s" => 100,
+                "distance_m" => 1000,
+                "activity_type" => "run",
+                "created_at" => Carbon::parse("2026-01-01 10:00:00"),
+                "updated_at" => Carbon::parse("2026-01-01 10:00:00"),
+            ],
+            [
+                "user_id" => $user->id,
+                "title" => "New",
+                "notes" => null,
+                "duration_s" => 200,
+                "distance_m" => 2000,
+                "activity_type" => "run",
+                "created_at" => Carbon::parse("2026-01-02 10:00:00"),
+                "updated_at" => Carbon::parse("2026-01-02 10:00:00"),
+            ],
+        ]);
+
+        $res = $this->actingAs($user)->getJson(route("activities.index", [
+            "sort" => "created_at",
+            "order" => "desc",
+        ]));
+
+        $res->assertOk();
+
+        $data = $res->json("data");
+
         $this->assertSame("New", $data[0]["title"]);
         $this->assertSame("Old", $data[1]["title"]);
     }
