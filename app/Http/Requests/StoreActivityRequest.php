@@ -33,6 +33,14 @@ class StoreActivityRequest extends FormRequest
             "distance_m" => ["required", "integer", "min:1"],
             "activity_type" => ["required", new Enum(ActivityType::class)],
             "photo" => ["image", "mimes:png", "max:4096"],
+
+            "gps_points" => ["nullable", "array", "max:20000"],
+            "gps_points.*.seq" => ["required", "integer", "min:1"],
+            "gps_points.*.lat" => ["required", "numeric", "between:-90,90"],
+            "gps_points.*.lng" => ["required", "numeric", "between:-180,180"],
+            "gps_points.*.alt_m" => ["nullable", "numeric"],
+            "gps_points.*.accuracy_m" => ["nullable", "numeric", "min:0"],
+            "gps_points.*.timestamp" => ["required", "integer", "min:0"],
         ];
     }
 }

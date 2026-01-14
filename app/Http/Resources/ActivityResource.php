@@ -25,6 +25,9 @@ class ActivityResource extends JsonResource
             "distance_m" => $this->distance_m,
             "photo" => $this->photo,
             "created_at" => $this->created_at,
+            "gps_points" => GpsPointResource::collection(
+                $this->whenLoaded("gpsPoints"),
+            ),
         ];
     }
 }
