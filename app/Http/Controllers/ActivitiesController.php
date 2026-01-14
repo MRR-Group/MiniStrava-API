@@ -6,6 +6,7 @@ namespace Strava\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Strava\Actions\Activities\CreateActivityAction;
 use Strava\Actions\Activities\GetActivityPhotoAction;
@@ -17,7 +18,7 @@ use Strava\Models\Activity;
 
 class ActivitiesController extends Controller
 {
-    public function index(Request $request, SortHelper $sortHelper)
+    public function index(Request $request, SortHelper $sortHelper): AnonymousResourceCollection
     {
         $user = $request->user();
 
