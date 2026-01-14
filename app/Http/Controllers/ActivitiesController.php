@@ -86,75 +86,72 @@ class ActivitiesController extends Controller
 
     private function filterType(Builder $query, Request $request): Builder
     {
-        $type = $request->query('activity_type');
+        $type = $request->query("activity_type");
 
         if ($type === null) {
             return $query;
         }
 
-        return $query->where(fn (Builder $q) => $q->where('activity_type', '=', $type));
+        return $query->where(fn(Builder $q) => $q->where("activity_type", "=", $type));
     }
-
 
     private function filterDate(Builder $query, Request $request): Builder
     {
-        $from = $request->query('date_from');
-        $to   = $request->query('date_to');
+        $from = $request->query("date_from");
+        $to = $request->query("date_to");
 
         if ($from === null && $to === null) {
             return $query;
         }
 
-        return $query->where(function (Builder $q) use ($from, $to) {
+        return $query->where(function (Builder $q) use ($from, $to): void {
             if ($from !== null) {
-                $q->whereDate('created_at', '>=', $from);
+                $q->whereDate("created_at", ">=", $from);
             }
 
             if ($to !== null) {
-                $q->whereDate('created_at', '<=', $to);
+                $q->whereDate("created_at", "<=", $to);
             }
         });
     }
 
     private function filterDistance(Builder $query, Request $request): Builder
     {
-        $min = $request->query('distance_min');
-        $max = $request->query('distance_max');
+        $min = $request->query("distance_min");
+        $max = $request->query("distance_max");
 
         if ($min === null && $max === null) {
             return $query;
         }
 
-        return $query->where(function (Builder $q) use ($min, $max) {
+        return $query->where(function (Builder $q) use ($min, $max): void {
             if ($min !== null) {
-                $q->where('distance_m', '>=', $min);
+                $q->where("distance_m", ">=", $min);
             }
 
             if ($max !== null) {
-                $q->where('distance_m', '<=', $max);
+                $q->where("distance_m", "<=", $max);
             }
         });
     }
 
     private function filterDuration(Builder $query, Request $request): Builder
     {
-        $min = $request->query('duration_min');
-        $max = $request->query('duration_max');
+        $min = $request->query("duration_min");
+        $max = $request->query("duration_max");
 
         if ($min === null && $max === null) {
             return $query;
         }
 
-        return $query->where(function (Builder $q) use ($min, $max) {
+        return $query->where(function (Builder $q) use ($min, $max): void {
             if ($min !== null) {
-                $q->where('duration_s', '>=', $min);
+                $q->where("duration_s", ">=", $min);
             }
 
             if ($max !== null) {
-                $q->where('duration_s', '<=', $max);
+                $q->where("duration_s", "<=", $max);
             }
         });
     }
-
-
 }
