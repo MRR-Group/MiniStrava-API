@@ -6,7 +6,6 @@ namespace Strava\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Strava\Http\Resources\GpsPointResource;
 
 class ActivityResource extends JsonResource
 {
