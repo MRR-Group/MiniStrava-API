@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Strava\Actions\Activities\BuildGpxFileAction;
 use Strava\Actions\Activities\CreateActivityAction;
 use Strava\Actions\Activities\GetActivityPhotoAction;
+use Strava\Actions\Activities\GetActivitySummaryAction;
 use Strava\Actions\Activities\StoreActivityGpsPointsAction;
 use Strava\Actions\Activities\StoreActivityPhotoAction;
 use Strava\Helpers\SortHelper;
@@ -85,6 +86,20 @@ class ActivitiesController extends Controller
         return ActivityResource::make(
             $activity->load("gpsPoints"),
         );
+    }
+
+    public function getSummary(Activity $activity, Request $request, GetActivitySummaryAction $getActivitySummaryAction)
+    {
+        $user = $request->user();
+
+        if (!$user->has_premium) {
+            abort(402);
+        }
+        $summary = $getActivitySummaryAction->execute($user, $activity);
+
+        return response()->json([
+            "summary" => $summary,
+        ]);
     }
 
     public function exportGpx(int $id, Request $request, BuildGpxFileAction $buildGpxFile): Response

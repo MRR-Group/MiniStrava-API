@@ -24,6 +24,7 @@ use Strava\Helpers\IdenticonHelper;
  * @property Carbon $birth_date
  * @property int|null $height
  * @property string|null $weight
+ * @property boolean $has_premium
  * @property Gender $gender
  * @property string $avatar
  * @property Carbon $email_verified_at

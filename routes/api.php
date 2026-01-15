@@ -24,6 +24,7 @@ Route::middleware(["auth:sanctum"])->group(function (): void {
     Route::get("/activities/{id}", [ActivitiesController::class, "show"])->name("activities.show");
     Route::get("/activities/{id}/photo", [ActivitiesController::class, "getPhoto"])->name("activities.photo.show");
     Route::get("/activities/{id}/export", [ActivitiesController::class, "exportGpx"])->name("activities.export.gpx");
+    Route::get("/activities/{activity}/summary", [ActivitiesController::class, "getSummary"])->name("activities.summary");
 
     Route::get("/profile", [ProfileController::class, "show"])->name("profile.show");
     Route::patch("/profile", [ProfileController::class, "update"])->name("profile.update");
