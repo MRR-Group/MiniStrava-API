@@ -12,9 +12,11 @@ use Illuminate\Support\Facades\DB;
 use Strava\Actions\Activities\BuildGpxFileAction;
 use Strava\Actions\Activities\CreateActivityAction;
 use Strava\Actions\Activities\GetActivityPhotoAction;
+use Strava\Actions\Activities\StoreActivityGpsPointsAction;
 use Strava\Actions\Activities\StoreActivityPhotoAction;
 use Strava\Helpers\SortHelper;
 use Strava\Http\Requests\StoreActivityRequest;
+use Strava\Http\Resources\ActivityResource;
 use Strava\Models\Activity;
 
 class ActivitiesController extends Controller

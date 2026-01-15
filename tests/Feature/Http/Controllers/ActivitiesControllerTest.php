@@ -35,6 +35,7 @@ class ActivitiesControllerTest extends TestCase
                 "duration_s" => 100,
                 "distance_m" => 1000,
                 "activity_type" => "run",
+                "started_at" => Carbon::parse("2026-01-02 10:00:00"),
                 "created_at" => Carbon::parse("2026-01-01 10:00:00"),
                 "updated_at" => Carbon::parse("2026-01-01 10:00:00"),
             ],
@@ -45,6 +46,7 @@ class ActivitiesControllerTest extends TestCase
                 "duration_s" => 200,
                 "distance_m" => 2000,
                 "activity_type" => "run",
+                "started_at" => Carbon::parse("2026-01-02 10:00:00"),
                 "created_at" => Carbon::parse("2026-01-02 10:00:00"),
                 "updated_at" => Carbon::parse("2026-01-02 10:00:00"),
             ],
@@ -55,6 +57,7 @@ class ActivitiesControllerTest extends TestCase
                 "duration_s" => 999,
                 "distance_m" => 9999,
                 "activity_type" => "other",
+                "started_at" => Carbon::parse("2026-01-02 10:00:00"),
                 "created_at" => Carbon::parse("2026-01-03 10:00:00"),
                 "updated_at" => Carbon::parse("2026-01-03 10:00:00"),
             ],
@@ -91,6 +94,7 @@ class ActivitiesControllerTest extends TestCase
                 "duration_s" => 100,
                 "distance_m" => 1000,
                 "activity_type" => "run",
+                "started_at" => Carbon::parse("2026-01-02 10:00:00"),
                 "created_at" => Carbon::parse("2026-01-01 10:00:00"),
                 "updated_at" => Carbon::parse("2026-01-01 10:00:00"),
             ],
@@ -101,6 +105,7 @@ class ActivitiesControllerTest extends TestCase
                 "duration_s" => 200,
                 "distance_m" => 2000,
                 "activity_type" => "run",
+                "started_at" => Carbon::parse("2026-01-02 10:00:00"),
                 "created_at" => Carbon::parse("2026-01-02 10:00:00"),
                 "updated_at" => Carbon::parse("2026-01-02 10:00:00"),
             ],
@@ -137,6 +142,7 @@ class ActivitiesControllerTest extends TestCase
             "duration_s" => 100,
             "distance_m" => 1000,
             "activity_type" => "run",
+            "started_at" => Carbon::parse("2026-01-02 10:00:00"),
         ]);
 
         $a2 = Activity::query()->create([
@@ -146,6 +152,7 @@ class ActivitiesControllerTest extends TestCase
             "duration_s" => 100,
             "distance_m" => 1000,
             "activity_type" => "run",
+            "started_at" => Carbon::parse("2026-01-02 10:00:00"),
         ]);
 
         $res = $this->actingAs($user)->getJson(route("activities.show", ["id" => $a1->id]));
@@ -182,6 +189,7 @@ class ActivitiesControllerTest extends TestCase
             "duration_s" => 120,
             "distance_m" => 1500,
             "activity_type" => "run",
+            "started_at" => Carbon::parse("2026-01-02 10:00:00"),
         ];
 
         $res = $this->actingAs($user)->postJson(route("activities.store"), $payload);
@@ -196,6 +204,7 @@ class ActivitiesControllerTest extends TestCase
             "title" => "Run",
             "duration_s" => 120,
             "distance_m" => 1500,
+            "started_at" => Carbon::parse("2026-01-02 10:00:00"),
         ]);
     }
 
@@ -233,6 +242,7 @@ class ActivitiesControllerTest extends TestCase
             "distance_m" => 1500,
             "activity_type" => "run",
             "photo" => $file,
+            "started_at" => Carbon::parse("2026-01-02 10:00:00"),
         ]);
 
         $res->assertCreated();
@@ -269,6 +279,7 @@ class ActivitiesControllerTest extends TestCase
             "duration_s" => 10,
             "distance_m" => 10,
             "activity_type" => "walk",
+            "started_at" => Carbon::parse("2026-01-02 10:00:00"),
         ]);
 
         Storage::disk("activityPhotos")
@@ -296,6 +307,7 @@ class ActivitiesControllerTest extends TestCase
             "duration_s" => 10,
             "distance_m" => 10,
             "activity_type" => "run",
+            "started_at" => Carbon::parse("2026-01-02 10:00:00"),
         ]);
 
         $token = $user->createToken("api-token")->plainTextToken;
@@ -320,6 +332,7 @@ class ActivitiesControllerTest extends TestCase
             "duration_s" => 10,
             "distance_m" => 10,
             "activity_type" => "run",
+            "started_at" => Carbon::parse("2026-01-02 10:00:00"),
         ]);
 
         Storage::disk("activityPhotos")
