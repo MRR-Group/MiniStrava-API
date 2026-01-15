@@ -91,7 +91,7 @@ class ActivitiesController extends Controller
     {
         $activity = Activity::query()
             ->where("user_id", $request->user()->id)
-            ->with(["gpsPoints" => fn($q) => $q->orderBy("seq")])
+            ->with(["gpsPoints" => fn($q) => $q->orderBy("timestamp")])
             ->findOrFail($id);
 
         $gpxFile = $buildGpxFile->execute($activity);

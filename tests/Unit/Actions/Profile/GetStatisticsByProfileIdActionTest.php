@@ -55,6 +55,7 @@ class GetStatisticsByProfileIdActionTest extends TestCase
                 "activity_type" => "run",
                 "created_at" => Carbon::parse("2026-01-01 10:00:00"),
                 "updated_at" => Carbon::parse("2026-01-01 10:00:00"),
+                "started_at" => now(),
             ],
             [
                 "user_id" => $user->id,
@@ -65,6 +66,7 @@ class GetStatisticsByProfileIdActionTest extends TestCase
                 "activity_type" => "run",
                 "created_at" => Carbon::parse("2026-01-03 12:00:00"),
                 "updated_at" => Carbon::parse("2026-01-03 12:00:00"),
+                "started_at" => now(),
             ],
         ]);
 

@@ -44,6 +44,7 @@ class Activity extends Model
         "duration_s" => "integer",
         "distance_m" => "integer",
         "activity_type" => ActivityType::class,
+        "started_at" => "datetime",
     ];
 
     /**

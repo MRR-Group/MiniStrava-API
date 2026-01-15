@@ -26,6 +26,7 @@ class CreateActivityActionTest extends TestCase
             "duration_s" => 600,
             "distance_m" => 2000,
             "activity_type" => "run",
+            "started_at" => now(),
         ];
 
         $activity = $action->execute($user->id, $data);
@@ -40,6 +41,7 @@ class CreateActivityActionTest extends TestCase
             "duration_s" => 600,
             "distance_m" => 2000,
             "activity_type" => "run",
+            "started_at" => now(),
         ]);
     }
 
@@ -54,6 +56,7 @@ class CreateActivityActionTest extends TestCase
             "duration_s" => 100,
             "distance_m" => 500,
             "activity_type" => "run",
+            "started_at" => now(),
         ]);
 
         $activity->refresh();
