@@ -31,6 +31,7 @@ class StoreActivityRequest extends FormRequest
             "notes" => ["nullable", "string", "max:2048"],
             "duration_s" => ["required", "integer", "min:1"],
             "distance_m" => ["required", "integer", "min:1"],
+            "started_at" => ["required", "date", "before_or_equal:now"],
             "activity_type" => ["required", new Enum(ActivityType::class)],
             "photo" => ["image", "mimes:png", "max:4096"],
 

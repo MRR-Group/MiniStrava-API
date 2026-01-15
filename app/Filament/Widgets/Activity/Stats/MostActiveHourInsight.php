@@ -30,14 +30,14 @@ class MostActiveHourInsight extends StatsOverviewWidget
         [$from, $to] = $this->resolveRange();
 
         $q = Activity::query()
-            ->whereBetween("created_at", [$from, $to]);
+            ->whereBetween("started_at", [$from, $to]);
 
         $q = $this->applyUserFilter($q);
         $q = $this->applyActivityDistanceFilter($q);
         $q = $this->applyActivityTypeFilter($q);
 
         $row = $q
-            ->selectRaw("EXTRACT(HOUR FROM created_at) as h, COUNT(*) as c")
+            ->selectRaw("EXTRACT(HOUR FROM started_at) as h, COUNT(*) as c")
             ->groupBy("h")
             ->orderByDesc("c")
             ->first();

@@ -69,6 +69,7 @@ class DemoSeeder extends Seeder
                             "distance_m" => rand($cfg["distance"][0], $cfg["distance"][1]),
                             "duration_s" => rand($cfg["duration"][0], $cfg["duration"][1]),
                             "activity_type" => $type,
+                            "started_at" => $day->copy()->addMinutes(rand(0, 1000)),
                             "created_at" => $day->copy()->addMinutes(rand(0, 1000)),
                         ]);
                     }
@@ -85,6 +86,7 @@ class DemoSeeder extends Seeder
                     "distance_m" => rand(15000, 40000),
                     "duration_s" => rand(1800, 5400),
                     "activity_type" => "ride",
+                    "started_at" => $peakDay,
                     "created_at" => $peakDay,
                 ]);
             }

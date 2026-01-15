@@ -29,7 +29,7 @@ class ActivityRecordsOverview extends StatsOverviewWidget
         [$from, $to] = $this->resolveRange();
 
         $q = Activity::query()
-            ->whereBetween("created_at", [$from, $to]);
+            ->whereBetween("started_at", [$from, $to]);
 
         $q = $this->applyUserFilter($q);
         $q = $this->applyActivityDistanceFilter($q);
