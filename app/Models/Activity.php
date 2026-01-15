@@ -17,6 +17,7 @@ use Strava\Enums\ActivityType;
  * @property int $user_id
  * @property string $title
  * @property string $notes
+ * @property string $summary
  * @property int $duration_s
  * @property int $distance_m
  * @property string $activity_type
@@ -35,6 +36,7 @@ class Activity extends Model
         "user_id",
         "title",
         "notes",
+        "summary",
         "duration_s",
         "distance_m",
         "activity_type",

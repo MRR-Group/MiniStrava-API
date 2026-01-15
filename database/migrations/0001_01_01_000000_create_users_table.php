@@ -21,6 +21,8 @@ return new class() extends Migration {
             $table->unsignedSmallInteger("height")->nullable();
             $table->decimal("weight", 5, 2)->nullable();
             $table->string("gender")->nullable();
+            $table->boolean("has_premium")->default(false);
+            $table->boolean("has_premium")->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

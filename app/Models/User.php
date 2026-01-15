@@ -24,6 +24,7 @@ use Strava\Helpers\IdenticonHelper;
  * @property Carbon $birth_date
  * @property int|null $height
  * @property string|null $weight
+ * @property boolean $has_premium
  * @property Gender $gender
  * @property string $avatar
  * @property Carbon $email_verified_at
@@ -45,6 +46,7 @@ class User extends Authenticatable
         "birth_date",
         "height",
         "weight",
+        "has_premium",
         "gender",
     ];
     protected $hidden = [
@@ -66,6 +68,7 @@ class User extends Authenticatable
             "email_verified_at" => "datetime",
             "birth_date" => "date",
             "password" => "hashed",
+            "has_premium" => "boolean",
             "gender" => Gender::class,
         ];
     }
