@@ -2,531 +2,228 @@ openapi: 3.0.3
 info:
   title: MiniStrava API
   version: 1.0.0
-  description: OpenAPI definition for MiniStrava API.
+  description: Complete and professional fitness tracking API.
 servers:
   - url: /api
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: Auth
+  - name: User
+  - name: Profiles
+  - name: Activities
+  - name: Leaderboard
+  - name: Push Tokens
+
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: Sanctum
+
   schemas:
-    EmptyResponse:
-      type: array
-      items: {}
-    ValidationErrorResponse:
+    # === [AUTH SCHEMAS] ===
+    Auth:ChangePasswordRequest:
+      type: object
+      required: [current_password, password, password_confirmation]
+      properties:
+        current_password: { type: string }
+        password: { type: string, minLength: 8 }
+        password_confirmation: { type: string, minLength: 8 }
+
+    Auth:ForgotPasswordRequest:
+      type: object
+      required: [email]
+      properties:
+        email: { type: string, format: email }
+
+    Auth:LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string, format: email }
+        password: { type: string }
+
+    Auth:RegisterRequest:
+      type: object
+      required: [name, email, password, password_confirmation]
+      properties:
+        name: { type: string, maxLength: 255 }
+        email: { type: string, format: email }
+        password: { type: string, minLength: 8 }
+        password_confirmation: { type: string, minLength: 8 }
+
+    Auth:ResetPasswordRequest:
+      type: object
+      required: [token, email, password, password_confirmation]
+      properties:
+        token: { type: string }
+        email: { type: string, format: email }
+        password: { type: string, minLength: 8 }
+        password_confirmation: { type: string, minLength: 8 }
+
+    # === [USER & PROFILE SCHEMAS] ===
+    User:Profile:
       type: object
       properties:
-        message:
-          type: string
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-      example:
-        message: "The email field is required."
-        errors:
-          email:
-            - "The email field is required."
-    ErrorResponse:
+        id: { type: integer }
+        email: { type: string, format: email }
+        name: { type: string }
+        first_name: { type: string, nullable: true }
+        last_name: { type: string, nullable: true }
+        birth_date: { type: string, format: date, nullable: true }
+        height: { type: integer, nullable: true }
+        weight: { type: number, nullable: true }
+        avatar: { type: string, nullable: true }
+        created_at: { type: string, format: date-time }
+
+    User:UpdateProfileRequest:
       type: object
       properties:
-        message:
-          type: string
-      example:
-        message: "Unauthenticated."
-    LoginRequest:
-      type: object
-      required:
-        - email
-        - password
-      properties:
-        email:
-          type: string
-          format: email
-          maxLength: 255
-        password:
-          type: string
-          maxLength: 255
-      example:
-        email: "user@example.com"
-        password: "secret-password"
-    RegisterRequest:
-      type: object
-      required:
-        - name
-        - email
-        - password
-        - password_confirmation
-      properties:
-        name:
-          type: string
-          maxLength: 255
-        email:
-          type: string
-          format: email
-          maxLength: 255
-        password:
-          type: string
-          minLength: 8
-          maxLength: 255
-        password_confirmation:
-          type: string
-          minLength: 8
-          maxLength: 255
-      example:
-        name: "Jane Runner"
-        email: "jane@example.com"
-        password: "secret-password"
-        password_confirmation: "secret-password"
-    ForgotPasswordRequest:
-      type: object
-      required:
-        - email
-      properties:
-        email:
-          type: string
-          format: email
-          maxLength: 255
-      example:
-        email: "user@example.com"
-    ResetPasswordRequest:
-      type: object
-      required:
-        - token
-        - email
-        - password
-        - password_confirmation
-      properties:
-        token:
-          type: string
-        email:
-          type: string
-          format: email
-        password:
-          type: string
-          minLength: 8
-          maxLength: 255
-        password_confirmation:
-          type: string
-          minLength: 8
-          maxLength: 255
-      example:
-        token: "reset-token"
-        email: "user@example.com"
-        password: "secret-password"
-        password_confirmation: "secret-password"
-    ChangePasswordRequest:
-      type: object
-      required:
-        - current_password
-        - password
-        - password_confirmation
-      properties:
-        current_password:
-          type: string
-        password:
-          type: string
-          minLength: 8
-        password_confirmation:
-          type: string
-          minLength: 8
-      example:
-        current_password: "old-password"
-        password: "new-password"
-        password_confirmation: "new-password"
-    UpdateProfileRequest:
+        first_name: { type: string, maxLength: 255, nullable: true }
+        last_name: { type: string, maxLength: 255, nullable: true }
+        birth_date: { type: string, format: date, nullable: true }
+        height: { type: integer, minimum: 50, maximum: 300, nullable: true }
+        weight: { type: number, minimum: 10, maximum: 300, nullable: true }
+        gender: { type: string, enum: [male, female], nullable: true }
+
+    # === [ACTIVITY SCHEMAS] ===
+    Activity:Base:
       type: object
       properties:
-        first_name:
-          type: string
-          maxLength: 255
-          nullable: true
-        last_name:
-          type: string
-          maxLength: 255
-          nullable: true
-        birth_date:
-          type: string
-          format: date
-          nullable: true
-        height:
-          type: integer
-          minimum: 50
-          maximum: 300
-          nullable: true
-        weight:
-          type: number
-          minimum: 10
-          maximum: 300
-          nullable: true
-        gender:
-          type: string
-          enum:
-            - male
-            - female
-          nullable: true
-      example:
-        first_name: "Jane"
-        last_name: "Runner"
-        birth_date: "1995-05-12"
-        height: 170
-        weight: 60.5
-        gender: "female"
-    ChangeAvatarRequest:
-      type: object
-      required:
-        - avatar
-      properties:
-        avatar:
-          type: string
-          format: binary
-    StoreActivityRequest:
-      type: object
-      required:
-        - title
-        - duration_s
-        - distance_m
-        - started_at
-        - activity_type
-      properties:
-        title:
-          type: string
-          maxLength: 255
-        notes:
-          type: string
-          maxLength: 2048
-          nullable: true
-        duration_s:
-          type: integer
-          minimum: 1
-        distance_m:
-          type: integer
-          minimum: 1
-        started_at:
-          type: string
-          format: date-time
-        activity_type:
-          type: string
-          enum:
-            - run
-            - ride
-            - walk
-            - other
-        photo:
-          type: string
-          format: binary
-          nullable: true
+        id: { type: integer }
+        title: { type: string }
+        notes: { type: string, nullable: true }
+        activity_type: { type: string, enum: [run, ride, walk, other] }
+        duration_s: { type: integer }
+        distance_m: { type: integer }
+        photo: { type: string, nullable: true }
+        started_at: { type: string, format: date-time }
         gps_points:
           type: array
-          nullable: true
-          maxItems: 20000
-          items:
-            type: object
-            required:
-              - lat
-              - lng
-              - timestamp
-            properties:
-              lat:
-                type: number
-                minimum: -90
-                maximum: 90
-              lng:
-                type: number
-                minimum: -180
-                maximum: 180
-              alt_m:
-                type: number
-                nullable: true
-              accuracy_m:
-                type: number
-                minimum: 0
-                nullable: true
-              timestamp:
-                type: integer
-                minimum: 0
-      example:
-        title: "Morning Run"
-        notes: "Easy pace"
-        duration_s: 1800
-        distance_m: 5000
-        started_at: "2026-01-15T06:30:00Z"
-        activity_type: "run"
-        gps_points:
-          - lat: 52.2297
-            lng: 21.0122
-            alt_m: 110.2
-            accuracy_m: 5.0
-            timestamp: 1736913000
-    User:
+          items: { $ref: '#/components/schemas/Activity:GpsPoint' }
+
+    Activity:GpsPoint:
       type: object
+      required: [lat, lng, timestamp]
       properties:
-        id:
-          type: integer
-        email:
-          type: string
-          format: email
-        name:
-          type: string
-        first_name:
-          type: string
-          nullable: true
-        last_name:
-          type: string
-          nullable: true
-        birth_date:
-          type: string
-          format: date
-          nullable: true
-        height:
-          type: integer
-          nullable: true
-        weight:
-          type: number
-          nullable: true
-        avatar:
-          type: string
-          nullable: true
-        created_at:
-          type: string
-          format: date-time
-      example:
-        id: 1
-        email: "user@example.com"
-        name: "Jane Runner"
-        first_name: "Jane"
-        last_name: "Runner"
-        birth_date: "1995-05-12"
-        height: 170
-        weight: 60.5
-        avatar: "avatars/1.png"
-        created_at: "2026-01-10T12:00:00Z"
-    GpsPoint:
+        lat: { type: number }
+        lng: { type: number }
+        alt_m: { type: number, nullable: true }
+        accuracy_m: { type: number, nullable: true }
+        timestamp: { type: integer }
+
+    Activity:StoreRequest:
       type: object
+      required: [title, duration_s, distance_m, started_at, activity_type]
       properties:
-        lat:
-          type: number
-        lng:
-          type: number
-        alt_m:
-          type: number
-          nullable: true
-        accuracy_m:
-          type: number
-          nullable: true
-        timestamp:
-          type: integer
-      example:
-        lat: 52.2297
-        lng: 21.0122
-        alt_m: 110.2
-        accuracy_m: 5.0
-        timestamp: 1736913000
-    Activity:
-      type: object
-      properties:
-        id:
-          type: integer
-        title:
-          type: string
-        notes:
-          type: string
-          nullable: true
-        activity_type:
-          type: string
-          enum:
-            - run
-            - ride
-            - walk
-            - other
-        duration_s:
-          type: integer
-        distance_m:
-          type: integer
-        photo:
-          type: string
-          nullable: true
-        started_at:
-          type: string
-          format: date-time
+        title: { type: string, maxLength: 255 }
+        notes: { type: string, maxLength: 2048, nullable: true }
+        duration_s: { type: integer, minimum: 1 }
+        distance_m: { type: integer, minimum: 1 }
+        started_at: { type: string, format: date-time }
+        activity_type: { type: string, enum: [run, ride, walk, other] }
+        photo: { type: string, format: binary, nullable: true }
         gps_points:
           type: array
-          items:
-            $ref: "#/components/schemas/GpsPoint"
-      example:
-        id: 10
-        title: "Morning Run"
-        notes: "Easy pace"
-        activity_type: "run"
-        duration_s: 1800
-        distance_m: 5000
-        photo: "activities/10.png"
-        started_at: "2026-01-15T06:30:00Z"
-        gps_points:
-          - lat: 52.2297
-            lng: 21.0122
-            alt_m: 110.2
-            accuracy_m: 5.0
-            timestamp: 1736913000
-    Statistics:
+          items: { $ref: '#/components/schemas/Activity:GpsPoint' }
+
+    # === [STATS & LEADERBOARD] ===
+    Stats:Statistics:
       type: object
       properties:
-        activitiesCount:
-          type: integer
-        totalDistanceM:
-          type: integer
-        totalDurationS:
-          type: integer
-        avgDistanceM:
-          type: number
-        avgDurationS:
-          type: number
-        avgSpeedMps:
-          type: number
-        avgSpeedKph:
-          type: number
-        avgPaceSecPerKm:
-          type: number
-        longestDistanceM:
-          type: integer
-        longestDurationS:
-          type: integer
-        firstActivity:
-          type: string
-          format: date-time
-          nullable: true
-        lastActivity:
-          type: string
-          format: date-time
-          nullable: true
-      example:
-        activitiesCount: 12
-        totalDistanceM: 42000
-        totalDurationS: 16000
-        avgDistanceM: 3500
-        avgDurationS: 1333
-        avgSpeedMps: 2.6
-        avgSpeedKph: 9.4
-        avgPaceSecPerKm: 385
-        longestDistanceM: 10000
-        longestDurationS: 3600
-        firstActivity: "2025-12-01T10:00:00Z"
-        lastActivity: "2026-01-12T18:00:00Z"
-    UserResourceResponse:
+        activitiesCount: { type: integer }
+        totalDistanceM: { type: integer }
+        totalDurationS: { type: integer }
+        avgDistanceM: { type: number }
+        avgDurationS: { type: number }
+        avgSpeedMps: { type: number }
+        avgSpeedKph: { type: number }
+        avgPaceSecPerKm: { type: number }
+        longestDistanceM: { type: integer }
+        longestDurationS: { type: integer }
+        firstActivity: { type: string, format: date-time, nullable: true }
+        lastActivity: { type: string, format: date-time, nullable: true }
+
+    Stats:LeaderboardEntry:
       type: object
       properties:
-        data:
-          $ref: "#/components/schemas/User"
-      example:
-        data:
-          id: 1
-          email: "user@example.com"
-          name: "Jane Runner"
-          first_name: "Jane"
-          last_name: "Runner"
-          birth_date: "1995-05-12"
-          height: 170
-          weight: 60.5
-          avatar: "avatars/1.png"
-          created_at: "2026-01-10T12:00:00Z"
-    ActivityResourceResponse:
+        place: { type: integer }
+        score: { type: integer }
+        user: { $ref: '#/components/schemas/User:Profile' }
+
+    # === [PUSH TOKENS] ===
+    Push:TokenItem:
       type: object
       properties:
-        data:
-          $ref: "#/components/schemas/Activity"
-    ActivityCollectionResponse:
+        id: { type: integer }
+        platform: { type: string, enum: [android, ios, web] }
+        device_id: { type: string, nullable: true }
+        device_name: { type: string, nullable: true }
+        last_used_at: { type: string, format: date-time, nullable: true }
+        created_at: { type: string, format: date-time }
+
+    Push:StoreRequest:
+      type: object
+      required: [token, platform]
+      properties:
+        token: { type: string, maxLength: 4096 }
+        platform: { type: string, enum: [android, ios, web] }
+        device_id: { type: string, maxLength: 255, nullable: true }
+        device_name: { type: string, maxLength: 255, nullable: true }
+
+    # === [RESPONSE WRAPPERS] ===
+    Wrapper:User:
       type: object
       properties:
-        data:
-          type: array
-          items:
-            $ref: "#/components/schemas/Activity"
-    UserCollectionResponse:
+        data: { $ref: '#/components/schemas/User:Profile' }
+    Wrapper:UserCollection:
       type: object
       properties:
-        data:
-          type: array
-          items:
-            $ref: "#/components/schemas/User"
-        links:
-          type: object
-          additionalProperties: true
-        meta:
-          type: object
-          additionalProperties: true
-      example:
-        data:
-          - id: 1
-            email: "user@example.com"
-            name: "Jane Runner"
-            first_name: "Jane"
-            last_name: "Runner"
-            birth_date: "1995-05-12"
-            height: 170
-            weight: 60.5
-            avatar: "avatars/1.png"
-            created_at: "2026-01-10T12:00:00Z"
-        links:
-          first: "http://api.ministrava.kacper.mrrgroup.pl/profiles?page=1"
-          last: "http://api.ministrava.kacper.mrrgroup.pl/profiles?page=3"
-          prev: null
-          next: "http://api.ministrava.kacper.mrrgroup.pl/profiles?page=2"
-        meta:
-          current_page: 1
-          per_page: 10
-          total: 30
-    StatisticsResourceResponse:
+        data: { type: array, items: { $ref: '#/components/schemas/User:Profile' } }
+        links: { type: object, additionalProperties: true }
+        meta: { type: object, additionalProperties: true }
+    Wrapper:Activity:
       type: object
       properties:
-        data:
-          $ref: "#/components/schemas/Statistics"
-    LeaderboardEntry:
+        data: { $ref: '#/components/schemas/Activity:Base' }
+    Wrapper:ActivityCollection:
       type: object
       properties:
-        place:
-          type: integer
-        score:
-          type: integer
-        user:
-          $ref: "#/components/schemas/User"
-      example:
-        place: 1
-        score: 42000
-        user:
-          id: 1
-          email: "user@example.com"
-          name: "Jane Runner"
-          first_name: "Jane"
-          last_name: "Runner"
-          birth_date: "1995-05-12"
-          height: 170
-          weight: 60.5
-          avatar: "avatars/1.png"
-          created_at: "2026-01-10T12:00:00Z"
-    LeaderboardResponse:
+        data: { type: array, items: { $ref: '#/components/schemas/Activity:Base' } }
+    Wrapper:Statistics:
       type: object
       properties:
-        data:
-          type: array
-          items:
-            $ref: "#/components/schemas/LeaderboardEntry"
+        data: { $ref: '#/components/schemas/Stats:Statistics' }
+    Wrapper:Leaderboard:
+      type: object
+      properties:
+        data: { type: array, items: { $ref: '#/components/schemas/Stats:LeaderboardEntry' } }
+    Wrapper:PushTokens:
+      type: object
+      properties:
+        ok: { type: boolean }
+        data: { type: array, items: { $ref: '#/components/schemas/Push:TokenItem' } }
+    Common:ValidationError:
+      type: object
+      properties:
+        message: { type: string }
+        errors: { type: object, additionalProperties: { type: array, items: { type: string } } }
+
 paths:
+  # --- AUTH ---
   /auth/login:
     post:
-      summary: Login
+      tags: [Auth]
+      security: []
       requestBody:
         required: true
         content:
           application/json:
-            schema:
-              $ref: "#/components/schemas/LoginRequest"
-            application/json; charset=utf-8:
-              schema:
-                $ref: "#/components/schemas/LoginRequest"
+            schema: { $ref: '#/components/schemas/Auth:LoginRequest' }
       responses:
         "200":
           description: OK
@@ -535,576 +232,320 @@ paths:
               schema:
                 type: object
                 properties:
-                  token:
-                    type: string
-                  user_id:
-                    type: integer
-              examples:
-                success:
-                  value:
-                    token: "1|exampletoken"
-                    user_id: 1
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EmptyResponse"
-        "422":
-          description: Validation error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ValidationErrorResponse"
+                  token: { type: string }
+                  user_id: { type: integer }
+
   /auth/register:
     post:
-      summary: Register
+      tags: [Auth]
+      security: []
       requestBody:
         required: true
         content:
           application/json:
+            schema: { $ref: '#/components/schemas/Auth:RegisterRequest' }
+      responses:
+        "201":
+          description: Created
+
+  /auth/logout:
+    post:
+      tags: [Auth]
+      responses:
+        "200":
+          description: OK
+
+  /auth/forgot-password:
+    post:
+      tags: [Auth]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Auth:ForgotPasswordRequest' }
+      responses:
+        "200":
+          description: Email sent
+
+  /auth/reset-password:
+    post:
+      tags: [Auth]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Auth:ResetPasswordRequest' }
+      responses:
+        "200":
+          description: OK
+
+  # --- PROFILES & SOCIAL ---
+  /profiles:
+    get:
+      tags: [Profiles]
+      security: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Wrapper:UserCollection' }
+
+  /profiles/{id}:
+    get:
+      tags: [Profiles]
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User:Profile' }
+
+  /profiles/{id}/statistics:
+    get:
+      tags: [Profiles]
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Wrapper:Statistics' }
+
+  /profiles/{id}/avatar:
+    get:
+      tags: [Profiles]
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            image/png: { schema: { type: string, format: binary } }
+
+  /profiles/{id}/export:
+    get:
+      tags: [Profiles]
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/gpx+xml: { schema: { type: string } }
+
+  # --- MY PROFILE & USER ---
+  /user:
+    get:
+      tags: [User]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User:Profile' }
+
+  /user/change-password:
+    post:
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Auth:ChangePasswordRequest' }
+      responses:
+        "200":
+          description: OK
+
+  /profile:
+    get:
+      tags: [User]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Wrapper:User' }
+    patch:
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/User:UpdateProfileRequest' }
+      responses:
+        "200":
+          description: OK
+
+  /profile/avatar:
+    post:
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
             schema:
-              $ref: "#/components/schemas/RegisterRequest"
+              type: object
+              required: [avatar]
+              properties:
+                avatar: { type: string, format: binary }
+      responses:
+        "200":
+          description: OK
+    delete:
+      tags: [User]
+      responses:
+        "200":
+          description: OK
+
+  # --- ACTIVITIES ---
+  /activities:
+    get:
+      tags: [Activities]
+      parameters:
+        - name: activity_type
+          in: query
+          schema: { type: string, enum: [run, ride, walk, other] }
+        - name: date_from
+          in: query
+          schema: { type: string, format: date }
+        - name: distance_min
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Wrapper:ActivityCollection' }
+    post:
+      tags: [Activities]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema: { $ref: '#/components/schemas/Activity:StoreRequest' }
       responses:
         "201":
           description: Created
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/EmptyResponse"
-        "422":
-          description: Validation error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ValidationErrorResponse"
-  /auth/forgot-password:
-    post:
-      summary: Request password reset
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ForgotPasswordRequest"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EmptyResponse"
-        "422":
-          description: Validation error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ValidationErrorResponse"
-  /auth/reset-password:
-    post:
-      summary: Reset password
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ResetPasswordRequest"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EmptyResponse"
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EmptyResponse"
-        "422":
-          description: Validation error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ValidationErrorResponse"
-  /profiles:
+              schema: { $ref: '#/components/schemas/Wrapper:Activity' }
+
+  /activities/{id}:
     get:
-      summary: List profiles
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserCollectionResponse"
-  /profiles/{id}:
-    get:
-      summary: Show profile
+      tags: [Activities]
       parameters:
         - name: id
           in: path
           required: true
-          schema:
-            type: integer
+          schema: { type: integer }
       responses:
         "200":
           description: OK
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/User"
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EmptyResponse"
-  /profiles/{id}/statistics:
+              schema: { $ref: '#/components/schemas/Wrapper:Activity' }
+
+  /activities/{id}/photo:
     get:
-      summary: Show profile statistics
+      tags: [Activities]
       parameters:
         - name: id
           in: path
           required: true
-          schema:
-            type: integer
+          schema: { type: integer }
       responses:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StatisticsResourceResponse"
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EmptyResponse"
-  /profiles/{id}/avatar:
+            image/png: { schema: { type: string, format: binary } }
+
+  /activities/{id}/export:
     get:
-      summary: Get profile avatar
+      tags: [Activities]
       parameters:
         - name: id
           in: path
           required: true
-          schema:
-            type: integer
+          schema: { type: integer }
       responses:
         "200":
           description: OK
           content:
-            image/png:
-              schema:
-                type: string
-                format: binary
-            image/svg+xml:
-              schema:
-                type: string
-                format: binary
+            application/gpx+xml: { schema: { type: string } }
+
+  # --- LEADERBOARD ---
   /leaderboard/{type}:
     get:
-      summary: Show leaderboard
+      tags: [Leaderboard]
       parameters:
         - name: type
           in: path
           required: true
-          schema:
-            type: string
-            enum:
-              - distance
-              - duration
-        - name: from
-          in: query
-          required: false
-          schema:
-            type: string
-            format: date
-        - name: to
-          in: query
-          required: false
-          schema:
-            type: string
-            format: date
+          schema: { type: string, enum: [distance, duration] }
         - name: limit
           in: query
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 200
+          schema: { type: integer, minimum: 1, maximum: 200 }
       responses:
         "200":
           description: OK
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/LeaderboardResponse"
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EmptyResponse"
-        "422":
-          description: Validation error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ValidationErrorResponse"
-  /user:
+              schema: { $ref: '#/components/schemas/Wrapper:Leaderboard' }
+
+  # --- PUSH TOKENS ---
+  /push-tokens:
     get:
-      summary: Get authenticated user
-      security:
-        - bearerAuth: []
+      tags: [Push Tokens]
       responses:
         "200":
           description: OK
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/User"
-        "401":
-          description: Unauthenticated
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-  /auth/logout:
+              schema: { $ref: '#/components/schemas/Wrapper:PushTokens' }
     post:
-      summary: Logout
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EmptyResponse"
-        "401":
-          description: Unauthenticated
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-  /activities:
-    get:
-      summary: List activities
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: activity_type
-          in: query
-          required: false
-          schema:
-            type: string
-            enum:
-              - run
-              - ride
-              - walk
-              - other
-        - name: date_from
-          in: query
-          required: false
-          schema:
-            type: string
-            format: date
-        - name: date_to
-          in: query
-          required: false
-          schema:
-            type: string
-            format: date
-        - name: distance_min
-          in: query
-          required: false
-          schema:
-            type: integer
-        - name: distance_max
-          in: query
-          required: false
-          schema:
-            type: integer
-        - name: duration_min
-          in: query
-          required: false
-          schema:
-            type: integer
-        - name: duration_max
-          in: query
-          required: false
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ActivityCollectionResponse"
-        "401":
-          description: Unauthenticated
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-    post:
-      summary: Create activity
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/StoreActivityRequest"
-      responses:
-        "201":
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ActivityResourceResponse"
-        "401":
-          description: Unauthenticated
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "422":
-          description: Validation error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ValidationErrorResponse"
-  /activities/{id}:
-    get:
-      summary: Show activity
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ActivityResourceResponse"
-        "401":
-          description: Unauthenticated
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EmptyResponse"
-  /activities/{id}/photo:
-    get:
-      summary: Get activity photo
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: OK
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
-        "204":
-          description: No Content
-        "401":
-          description: Unauthenticated
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EmptyResponse"
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EmptyResponse"
-  /activities/{id}/export:
-    get:
-      summary: Export activity as GPX
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/gpx+xml:
-              schema:
-                type: string
-        "401":
-          description: Unauthenticated
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EmptyResponse"
-  /profile:
-    get:
-      summary: Show own profile
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserResourceResponse"
-        "401":
-          description: Unauthenticated
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-    patch:
-      summary: Update own profile
-      security:
-        - bearerAuth: []
+      tags: [Push Tokens]
       requestBody:
         required: true
         content:
           application/json:
-            schema:
-              $ref: "#/components/schemas/UpdateProfileRequest"
+            schema: { $ref: '#/components/schemas/Push:StoreRequest' }
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserResourceResponse"
-        "401":
-          description: Unauthenticated
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "422":
-          description: Validation error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ValidationErrorResponse"
-  /profile/avatar:
-    post:
-      summary: Change avatar
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/ChangeAvatarRequest"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserResourceResponse"
-        "401":
-          description: Unauthenticated
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "422":
-          description: Validation error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ValidationErrorResponse"
     delete:
-      summary: Delete avatar
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserResourceResponse"
-        "401":
-          description: Unauthenticated
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-  /user/change-password:
-    post:
-      summary: Change password
-      security:
-        - bearerAuth: []
+      tags: [Push Tokens]
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ChangePasswordRequest"
+              type: object
+              required: [token]
+              properties:
+                token: { type: string }
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EmptyResponse"
-        "401":
-          description: Unauthenticated
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EmptyResponse"
-        "422":
-          description: Validation error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ValidationErrorResponse"
