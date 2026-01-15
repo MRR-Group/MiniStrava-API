@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Strava\Enums\ActivityType;
 
 /**
@@ -25,6 +26,7 @@ use Strava\Enums\ActivityType;
  * @property Carbon $updated_at
  *
  * @property-read User $user
+ * @property-read Collection<int, GpsPoint> $gpsPoints
  */
 class Activity extends Model
 {
