@@ -15,6 +15,7 @@ return new class() extends Migration {
 
             $table->string("title");
             $table->text("notes")->nullable();
+            $table->text("summary")->nullable();
             $table->integer("duration_s");
             $table->integer("distance_m");
             $table->string("activity_type");

@@ -9,6 +9,7 @@
         "ext-pdo": "*",
         "blumilksoftware/openapi-toolbox": "^3.0",
         "filament/filament": "^4.0",
+        "google-gemini-php/laravel": "^2.0",
         "guzzlehttp/guzzle": "^7.9.3",
         "inertiajs/inertia-laravel": "^2.0.3",
         "intervention/image-laravel": "^1.5",
