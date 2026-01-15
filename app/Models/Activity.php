@@ -7,7 +7,9 @@ namespace Strava\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Strava\Enums\ActivityType;
 
 /**
@@ -20,10 +22,12 @@ use Strava\Enums\ActivityType;
  * @property string $activity_type
  * @property string $photo
  *
+ * @property Carbon $started_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
  * @property-read User $user
+ * @property-read Collection<int, GpsPoint> $gpsPoints
  */
 class Activity extends Model
 {
@@ -34,11 +38,13 @@ class Activity extends Model
         "duration_s",
         "distance_m",
         "activity_type",
+        "started_at",
     ];
     protected $casts = [
         "duration_s" => "integer",
         "distance_m" => "integer",
         "activity_type" => ActivityType::class,
+        "started_at" => "datetime",
     ];
 
     /**
@@ -47,6 +53,14 @@ class Activity extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return HasMany<GpsPoint>
+     */
+    public function gpsPoints(): HasMany
+    {
+        return $this->hasMany(GpsPoint::class, "activity_id");
     }
 
     protected function photo(): Attribute

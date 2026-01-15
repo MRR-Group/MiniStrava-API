@@ -18,6 +18,7 @@ return new class() extends Migration {
             $table->integer("duration_s");
             $table->integer("distance_m");
             $table->string("activity_type");
+            $table->timestamp("started_at");
 
             $table->timestamps();
         });

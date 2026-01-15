@@ -29,43 +29,65 @@ class DemoSeeder extends Seeder
                 ["name" => "Bartek", "email" => "bartek@test.com"],
                 ["name" => "Celina", "email" => "celina@test.com"],
                 ["name" => "Daria", "email" => "daria@test.com"],
+                ["name" => "Ewa", "email" => "ewa@test.com"],
+                ["name" => "Filip", "email" => "filip@test.com"],
             ])->map(fn($u) => User::query()->create([
                 "name" => $u["name"],
                 "email" => $u["email"],
                 "password" => Hash::make("password"),
             ]));
 
-            foreach ($users as $i => $user) {
-                Activity::query()->create([
-                    "user_id" => $user->id,
-                    "title" => "Run",
-                    "notes" => "Morning run",
-                    "distance_m" => 3000 + ($i * 2000),
-                    "duration_s" => 900 + ($i * 600),
-                    "activityType" => "run",
-                    "created_at" => $now->copy()->startOfWeek()->addDays($i),
-                ]);
+            $activityTypes = [
+                "run" => [
+                    "distance" => [3000, 12000],
+                    "duration" => [900, 3600],
+                ],
+                "walk" => [
+                    "distance" => [1000, 6000],
+                    "duration" => [900, 5400],
+                ],
+                "ride" => [
+                    "distance" => [8000, 60000],
+                    "duration" => [1200, 7200],
+                ],
+            ];
 
-                Activity::query()->create([
-                    "user_id" => $user->id,
-                    "title" => "Evening run",
-                    "notes" => "Easy pace",
-                    "distance_m" => 2000 + ($i * 1500),
-                    "duration_s" => 800 + ($i * 500),
-                    "activityType" => "run",
-                    "created_at" => $now->copy()->startOfWeek()->addDays($i)->addHours(5),
-                ]);
+            foreach (range(0, 28) as $daysAgo) {
+                $day = $now->copy()->subDays($daysAgo)->startOfDay();
+
+                $activeUsers = $users->shuffle()->take(rand(1, $users->count()));
+
+                foreach ($activeUsers as $user) {
+                    foreach (range(1, rand(1, 2)) as $n) {
+                        $type = collect(array_keys($activityTypes))->random();
+                        $cfg = $activityTypes[$type];
+
+                        Activity::query()->create([
+                            "user_id" => $user->id,
+                            "title" => ucfirst($type),
+                            "notes" => "Demo {$type}",
+                            "distance_m" => rand($cfg["distance"][0], $cfg["distance"][1]),
+                            "duration_s" => rand($cfg["duration"][0], $cfg["duration"][1]),
+                            "activity_type" => $type,
+                            "started_at" => $day->copy()->addMinutes(rand(0, 1000)),
+                            "created_at" => $day->copy()->addMinutes(rand(0, 1000)),
+                        ]);
+                    }
+                }
             }
 
-            foreach ($users as $i => $user) {
+            $peakDay = $now->copy()->subDays(3)->setTime(10, 0);
+
+            foreach ($users as $user) {
                 Activity::query()->create([
                     "user_id" => $user->id,
-                    "title" => "Last week run",
-                    "notes" => "Old activity",
-                    "distance_m" => 4000 + ($i * 1000),
-                    "duration_s" => 1200 + ($i * 400),
-                    "activityType" => "run",
-                    "created_at" => $now->copy()->subWeek()->startOfWeek()->addDays($i),
+                    "title" => "Group ride",
+                    "notes" => "Everyone active",
+                    "distance_m" => rand(15000, 40000),
+                    "duration_s" => rand(1800, 5400),
+                    "activity_type" => "ride",
+                    "started_at" => $peakDay,
+                    "created_at" => $peakDay,
                 ]);
             }
         });
