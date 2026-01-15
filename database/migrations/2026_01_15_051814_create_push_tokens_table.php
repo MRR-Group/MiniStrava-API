@@ -9,24 +9,26 @@ use Illuminate\Support\Facades\Schema;
 return new class() extends Migration {
     public function up(): void
     {
-        Schema::create("activities", function (Blueprint $table): void {
+        Schema::create("push_tokens", function (Blueprint $table): void {
             $table->id();
+
             $table->foreignId("user_id")->constrained()->cascadeOnDelete();
 
-            $table->string("title");
-            $table->text("notes")->nullable();
-            $table->text("summary")->nullable();
-            $table->integer("duration_s");
-            $table->integer("distance_m");
-            $table->string("activity_type");
-            $table->timestamp("started_at");
+            $table->string("token")->unique();
+            $table->string("platform", 16);
+            $table->string("device_id")->nullable();
+            $table->string("device_name")->nullable();
+
+            $table->timestamp("last_used_at")->nullable();
 
             $table->timestamps();
+
+            $table->index(["user_id", "platform"]);
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists("activities");
+        Schema::dropIfExists("push_tokens");
     }
 };
