@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature;
+namespace Feature\Http\Controllers\Profile;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -147,6 +147,42 @@ class ProfileTest extends TestCase
 
         $this->assertUserResource($res, $user);
         Storage::disk("avatars")->assertMissing($user->id . ".png");
+    }
+
+    public function testProfileEndpointsRequireAuthentication(): void
+    {
+        $this->getJson("/api/profile")->assertUnauthorized();
+        $this->patchJson("/api/profile", [])->assertUnauthorized();
+        $this->postJson("/api/profile/avatar", [])->assertUnauthorized();
+        $this->deleteJson("/api/profile/avatar")->assertUnauthorized();
+    }
+
+    public function testUpdateProfileRejectsBirthDateInFuture(): void
+    {
+        $user = User::factory()->create(["email" => "u1@gmail.com"]);
+
+        $res = $this->actingAs($user)->patchJson("/api/profile", [
+            "birth_date" => "2999-01-01",
+        ]);
+
+        $res->assertUnprocessable();
+        $res->assertJsonValidationErrors(["birth_date"]);
+    }
+
+    public function testChangeAvatarRejectsNonPng(): void
+    {
+        Storage::fake("avatars");
+
+        $user = User::factory()->create(["email" => "u1@gmail.com"]);
+
+        $file = UploadedFile::fake()->create("avatar.jpg", 10, "image/jpeg");
+
+        $res = $this->actingAs($user)->postJson("/api/profile/avatar", [
+            "avatar" => $file,
+        ]);
+
+        $res->assertUnprocessable();
+        $res->assertJsonValidationErrors(["avatar"]);
     }
 
     private function acting(User $user): self
