@@ -36,14 +36,14 @@ class DistancePerDayChart extends ChartWidget
         $days = (int)max($fromDay->diffInDays($toDay) + 1, 1);
 
         $q = Activity::query()
-            ->whereBetween("created_at", [$from, $to]);
+            ->whereBetween("started_at", [$from, $to]);
 
         $q = $this->applyUserFilter($q);
         $q = $this->applyActivityDistanceFilter($q);
         $q = $this->applyActivityTypeFilter($q);
 
         $rows = $q
-            ->selectRaw("DATE(created_at) as d, SUM(distance_m) as m")
+            ->selectRaw("DATE(started_at) as d, SUM(distance_m) as m")
             ->groupBy("d")
             ->orderBy("d")
             ->get();

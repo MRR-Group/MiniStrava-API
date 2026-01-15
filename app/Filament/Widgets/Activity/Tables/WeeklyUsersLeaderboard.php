@@ -54,7 +54,7 @@ class WeeklyUsersLeaderboard extends TableWidget
 
         $q = User::query()
             ->join("activities", "activities.user_id", "=", "users.id")
-            ->whereBetween("activities.created_at", [$from, $to])
+            ->whereBetween("activities.started_at", [$from, $to])
             ->groupBy("users.id", "users.name", "users.email")
             ->select([
                 "users.id",

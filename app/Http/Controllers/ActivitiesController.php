@@ -90,19 +90,19 @@ class ActivitiesController extends Controller
     public function exportGpx(int $id, Request $request, BuildGpxFileAction $buildGpxFile)
     {
         $activity = Activity::query()
-            ->where('user_id', $request->user()->id)
-            ->with(['gpsPoints' => fn ($q) => $q->orderBy('seq')])
+            ->where("user_id", $request->user()->id)
+            ->with(["gpsPoints" => fn($q) => $q->orderBy("seq")])
             ->findOrFail($id);
 
         $gpxFile = $buildGpxFile->execute($activity);
 
         $xml = $gpxFile->toXML()->saveXML();
 
-        $activityDateTime = $activity->created_at->format('Y-m-d_H:i:s');
+        $activityDateTime = $activity->created_at->format("Y-m-d_H:i:s");
 
         return response()->make($xml, 200, [
-            'Content-Type' => 'application/gpx+xml; charset=UTF-8',
-            'Content-Disposition' => 'attachment; filename="activity-'.$activityDateTime.'.gpx"',
+            "Content-Type" => "application/gpx+xml; charset=UTF-8",
+            "Content-Disposition" => 'attachment; filename="activity-' . $activityDateTime . '.gpx"',
         ]);
     }
 

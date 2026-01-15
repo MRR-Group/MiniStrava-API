@@ -34,14 +34,14 @@ class ActivityStreakInsight extends StatsOverviewWidget
         $toDay = (clone $to)->endOfDay();
 
         $q = Activity::query()
-            ->whereBetween("created_at", [$fromDay, $toDay]);
+            ->whereBetween("started_at", [$fromDay, $toDay]);
 
         $q = $this->applyUserFilter($q);
         $q = $this->applyActivityDistanceFilter($q);
         $q = $this->applyActivityTypeFilter($q);
 
         $dates = $q
-            ->selectRaw("DATE(created_at) as d")
+            ->selectRaw("DATE(started_at) as d")
             ->groupBy("d")
             ->orderBy("d")
             ->pluck("d")

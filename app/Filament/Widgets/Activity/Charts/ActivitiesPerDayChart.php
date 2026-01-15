@@ -33,14 +33,14 @@ class ActivitiesPerDayChart extends ChartWidget
         $days = (int)max($from->copy()->startOfDay()->diffInDays($to->copy()->startOfDay()) + 1, 1);
 
         $q = Activity::query()
-            ->whereBetween("created_at", [$from, $to]);
+            ->whereBetween("started_at", [$from, $to]);
 
         $q = $this->applyUserFilter($q);
         $q = $this->applyActivityDistanceFilter($q);
         $q = $this->applyActivityTypeFilter($q);
 
         $rows = $q
-            ->selectRaw("DATE(created_at) as d, COUNT(*) as c")
+            ->selectRaw("DATE(started_at) as d, COUNT(*) as c")
             ->groupBy("d")
             ->orderBy("d")
             ->get();

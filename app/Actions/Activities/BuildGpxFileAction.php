@@ -24,9 +24,9 @@ class BuildGpxFileAction
         $gpxFile = new GpxFile();
 
         $metadata = new Metadata();
-        $metadata->name = $activity->title ?? 'Activity '.$activity->id;
+        $metadata->name = $activity->title ?? "Activity " . $activity->id;
         $metadata->time = new DateTimeImmutable(
-            $activity->created_at->toIso8601String()
+            $activity->created_at->toIso8601String(),
         );
 
         $gpxFile->metadata = $metadata;
@@ -39,16 +39,16 @@ class BuildGpxFileAction
         foreach ($activity->gpsPoints as $p) {
             $rawTs = $p->timestamp;
 
-            $ts = is_string($rawTs) ? (int) $rawTs : $rawTs;
+            $ts = is_string($rawTs) ? (int)$rawTs : $rawTs;
 
             if ($ts > 2_000_000_000) {
                 $ts = intdiv($ts, 1000);
             }
 
             $point = new Point(Point::TRACKPOINT);
-            $point->latitude = (float) $p->lat;
-            $point->longitude = (float) $p->lng;
-            $point->elevation = $p->alt_m !== null ? (float) $p->alt_m : null;
+            $point->latitude = (float)$p->lat;
+            $point->longitude = (float)$p->lng;
+            $point->elevation = $p->alt_m !== null ? (float)$p->alt_m : null;
             $point->time = Carbon::createFromTimestampUTC($ts)->toDateTime();
 
             $segment->points[] = $point;

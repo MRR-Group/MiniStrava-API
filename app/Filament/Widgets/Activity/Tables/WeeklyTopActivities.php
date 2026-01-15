@@ -32,7 +32,7 @@ class WeeklyTopActivities extends TableWidget
         [$from, $to] = $this->resolveRange();
 
         $q = Activity::query()
-            ->whereBetween("created_at", [$from, $to]);
+            ->whereBetween("started_at", [$from, $to]);
 
         $q = $this->applyUserFilter($q);
         $q = $this->applyActivityDistanceFilter($q);
@@ -47,7 +47,7 @@ class WeeklyTopActivities extends TableWidget
                     ->label("ID")
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                Tables\Columns\TextColumn::make("activityType")
+                Tables\Columns\TextColumn::make("activity_type")
                     ->label("Type")
                     ->badge()
                     ->formatStateUsing(fn($state) => $state ?: "unknown"),

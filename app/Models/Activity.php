@@ -37,7 +37,6 @@ class Activity extends Model
         "activity_type",
         "started_at",
     ];
-
     protected $casts = [
         "duration_s" => "integer",
         "distance_m" => "integer",
