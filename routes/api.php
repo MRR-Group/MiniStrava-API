@@ -13,6 +13,7 @@ use Strava\Http\Controllers\Auth\RegisterController;
 use Strava\Http\Controllers\Leaderboard\LeaderboardController;
 use Strava\Http\Controllers\Profile\ProfileController;
 use Strava\Http\Controllers\Profile\ProfilesController;
+use Strava\Http\Controllers\PushTokenController;
 
 Route::middleware("auth:sanctum")->get("/user", fn(Request $request): JsonResponse => new JsonResponse($request->user()));
 
@@ -33,6 +34,10 @@ Route::middleware(["auth:sanctum"])->group(function (): void {
     Route::get("/profile/export", [ProfileController::class, "exportCSV"])->name("profile.export.csv");
 
     Route::post("/user/change-password", [PasswordController::class, "changePassword"])->name("change-password");
+
+    Route::get("/push-tokens", [PushTokenController::class, "index"])->name("push-tokens.index");
+    Route::post("/push-tokens", [PushTokenController::class, "store"])->name("push-tokens.store");
+    Route::delete("/push-tokens", [PushTokenController::class, "destroy"])->name("push-tokens.destroy");
 });
 
 Route::post("/auth/login", [LoginController::class, "login"])->name("login");
