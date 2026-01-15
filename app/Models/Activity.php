@@ -22,6 +22,7 @@ use Strava\Enums\ActivityType;
  * @property string $activity_type
  * @property string $photo
  *
+ * @property Carbon $started_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *

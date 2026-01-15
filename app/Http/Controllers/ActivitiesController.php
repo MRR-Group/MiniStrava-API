@@ -87,7 +87,7 @@ class ActivitiesController extends Controller
         );
     }
 
-    public function exportGpx(int $id, Request $request, BuildGpxFileAction $buildGpxFile)
+    public function exportGpx(int $id, Request $request, BuildGpxFileAction $buildGpxFile): Response
     {
         $activity = Activity::query()
             ->where("user_id", $request->user()->id)
@@ -98,7 +98,7 @@ class ActivitiesController extends Controller
 
         $xml = $gpxFile->toXML()->saveXML();
 
-        $activityDateTime = $activity->created_at->format("Y-m-d_H:i:s");
+        $activityDateTime = $activity->started_at->format("Y-m-d_H:i:s");
 
         return response()->make($xml, 200, [
             "Content-Type" => "application/gpx+xml; charset=UTF-8",

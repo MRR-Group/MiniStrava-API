@@ -26,7 +26,7 @@ class BuildGpxFileAction
         $metadata = new Metadata();
         $metadata->name = $activity->title ?? "Activity " . $activity->id;
         $metadata->time = new DateTimeImmutable(
-            $activity->created_at->toIso8601String(),
+            $activity->started_at->toIso8601String(),
         );
 
         $gpxFile->metadata = $metadata;
