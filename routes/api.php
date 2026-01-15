@@ -29,6 +29,7 @@ Route::middleware(["auth:sanctum"])->group(function (): void {
     Route::patch("/profile", [ProfileController::class, "update"])->name("profile.update");
     Route::post("/profile/avatar", [ProfileController::class, "changeAvatar"])->name("profile.avatar.update");
     Route::delete("/profile/avatar", [ProfileController::class, "deleteAvatar"])->name("profile.avatar.delete");
+    Route::get("/profile/export", [ProfileController::class, "exportCSV"])->name("profile.export.csv");
 
     Route::post("/user/change-password", [PasswordController::class, "changePassword"])->name("change-password");
 });
