@@ -27,8 +27,11 @@ class ActivitiesTable
                 TextColumn::make("distance_m")
                     ->numeric()
                     ->sortable(),
-                TextColumn::make("activityType")
+                TextColumn::make("activity_type")
                     ->searchable(),
+                TextColumn::make("started_at")
+                    ->dateTime()
+                    ->sortable(),
                 TextColumn::make("created_at")
                     ->dateTime()
                     ->sortable()

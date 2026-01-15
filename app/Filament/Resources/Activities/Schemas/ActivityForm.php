@@ -29,7 +29,7 @@ class ActivityForm
                 TextInput::make("distance_m")
                     ->required()
                     ->numeric(),
-                TextInput::make("activityType")
+                TextInput::make("activity_type")
                     ->required(),
             ]);
     }

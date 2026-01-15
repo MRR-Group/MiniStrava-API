@@ -24,6 +24,7 @@ class GpsPointTest extends TestCase
             "duration_s" => 10,
             "distance_m" => 10,
             "activity_type" => "run",
+            "started_at" => now(),
         ]);
 
         $gps = GpsPoint::query()->create([
@@ -60,6 +61,7 @@ class GpsPointTest extends TestCase
             "duration_s" => 10,
             "distance_m" => 10,
             "activity_type" => "run",
+            "started_at" => now(),
         ]);
 
         GpsPoint::query()->insert([

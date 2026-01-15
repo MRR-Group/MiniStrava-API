@@ -31,6 +31,7 @@ class ListActivitiesActionTest extends TestCase
                 "activity_type" => "run",
                 "created_at" => Carbon::parse("2026-01-01 10:00:00"),
                 "updated_at" => Carbon::parse("2026-01-01 10:00:00"),
+                "started_at" => now(),
             ],
             [
                 "user_id" => $user->id,
@@ -41,6 +42,7 @@ class ListActivitiesActionTest extends TestCase
                 "activity_type" => "walk",
                 "created_at" => Carbon::parse("2026-01-02 10:00:00"),
                 "updated_at" => Carbon::parse("2026-01-02 10:00:00"),
+                "started_at" => now(),
             ],
             [
                 "user_id" => $other->id,
@@ -51,6 +53,7 @@ class ListActivitiesActionTest extends TestCase
                 "activity_type" => "ride",
                 "created_at" => Carbon::parse("2026-01-03 10:00:00"),
                 "updated_at" => Carbon::parse("2026-01-03 10:00:00"),
+                "started_at" => now(),
             ],
         ]);
 
@@ -83,6 +86,7 @@ class ListActivitiesActionTest extends TestCase
                 "activity_type" => "run",
                 "created_at" => now()->addSeconds($i),
                 "updated_at" => now()->addSeconds($i),
+                "started_at" => now(),
             ];
         }
 

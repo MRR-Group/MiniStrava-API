@@ -34,8 +34,8 @@ class WeekVsLastWeekInsight extends StatsOverviewWidget
         $prevTo = (clone $from)->subSecond();
         $prevFrom = (clone $prevTo)->subSeconds($spanSeconds);
 
-        $thisQ = Activity::query()->whereBetween("created_at", [$from, $to]);
-        $lastQ = Activity::query()->whereBetween("created_at", [$prevFrom, $prevTo]);
+        $thisQ = Activity::query()->whereBetween("started_at", [$from, $to]);
+        $lastQ = Activity::query()->whereBetween("started_at", [$prevFrom, $prevTo]);
 
         $thisQ = $this->applyUserFilter($thisQ);
         $thisQ = $this->applyActivityDistanceFilter($thisQ);
