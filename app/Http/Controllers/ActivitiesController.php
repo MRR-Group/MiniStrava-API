@@ -9,13 +9,14 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Strava\Actions\Activities\BuildGpxFileAction;
 use Strava\Actions\Activities\CreateActivityAction;
 use Strava\Actions\Activities\GetActivityPhotoAction;
 use Strava\Actions\Activities\StoreActivityGpsPointsAction;
 use Strava\Actions\Activities\StoreActivityPhotoAction;
+use Strava\Enums\ActivityResource;
 use Strava\Helpers\SortHelper;
 use Strava\Http\Requests\StoreActivityRequest;
-use Strava\Http\Resources\ActivityResource;
 use Strava\Models\Activity;
 
 class ActivitiesController extends Controller
@@ -84,6 +85,25 @@ class ActivitiesController extends Controller
         return ActivityResource::make(
             $activity->load("gpsPoints"),
         );
+    }
+
+    public function exportGpx(int $id, Request $request, BuildGpxFileAction $buildGpxFile)
+    {
+        $activity = Activity::query()
+            ->where('user_id', $request->user()->id)
+            ->with(['gpsPoints' => fn ($q) => $q->orderBy('seq')])
+            ->findOrFail($id);
+
+        $gpxFile = $buildGpxFile->execute($activity);
+
+        $xml = $gpxFile->toXML()->saveXML();
+
+        $activityDateTime = $activity->created_at->format('Y-m-d_H:i:s');
+
+        return response()->make($xml, 200, [
+            'Content-Type' => 'application/gpx+xml; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="activity-'.$activityDateTime.'.gpx"',
+        ]);
     }
 
     public function getPhoto(int $id, Request $request, GetActivityPhotoAction $getActivityPhotoAction): Response

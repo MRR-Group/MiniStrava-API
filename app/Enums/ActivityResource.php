@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Strava\Http\Resources;
+namespace Strava\Enums;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Strava\Http\Resources\GpsPointResource;
 
 class ActivityResource extends JsonResource
 {
@@ -24,7 +25,7 @@ class ActivityResource extends JsonResource
             "duration_s" => $this->duration_s,
             "distance_m" => $this->distance_m,
             "photo" => $this->photo,
-            "created_at" => $this->created_at,
+            "started_at" => $this->started_at,
             "gps_points" => GpsPointResource::collection(
                 $this->whenLoaded("gpsPoints"),
             ),
