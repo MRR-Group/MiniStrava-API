@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property int    $activity_id
- * @property int    $seq
- * @property float  $lat
- * @property float  $lng
- * @property float  $alt_m
- * @property float  $accuracy_m
- * @property int    $timestamp
+ * @property int $activity_id
+ * @property int $seq
+ * @property float $lat
+ * @property float $lng
+ * @property float $alt_m
+ * @property float $accuracy_m
+ * @property int $timestamp
  * @property-read Activity $activity
  */
 class GpsPoint extends Model

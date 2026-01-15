@@ -10,8 +10,8 @@ return new class() extends Migration {
     public function up(): void
     {
         Schema::create("gps_points", function (Blueprint $table): void {
-            $table->integer("id");
-            $table->foreignId('activity_id')->constrained('activities')->cascadeOnDelete();
+            $table->id();
+            $table->foreignId("activity_id")->constrained("activities")->cascadeOnDelete();
 
             $table->double("lat");
             $table->double("lng");
@@ -20,7 +20,6 @@ return new class() extends Migration {
             $table->double("accuracy_m")->nullable();
 
             $table->integer("timestamp");
-
 
             $table->timestamps();
         });
