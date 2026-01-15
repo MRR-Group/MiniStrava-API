@@ -7,11 +7,20 @@ namespace Strava\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int    $activity_id
+ * @property int    $seq
+ * @property float  $lat
+ * @property float  $lng
+ * @property float  $alt_m
+ * @property float  $accuracy_m
+ * @property int    $timestamp
+ * @property-read Activity $activity
+ */
 class GpsPoint extends Model
 {
     protected $fillable = [
         "activity_id",
-        "seq",
         "lat",
         "lng",
         "alt_m",
@@ -19,7 +28,6 @@ class GpsPoint extends Model
         "timestamp",
     ];
     protected $casts = [
-        "seq" => "integer",
         "lat" => "float",
         "lng" => "float",
         "alt_m" => "float",

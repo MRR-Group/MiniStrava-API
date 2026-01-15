@@ -17,7 +17,6 @@ class GpsPointResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "seq" => $this->seq,
             "lat" => $this->lat,
             "lng" => $this->lng,
             "alt_m" => $this->alt_m,
