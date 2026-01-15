@@ -10,6 +10,7 @@ use Strava\Actions\Avatars\ChangeAvatarAction;
 use Strava\Actions\Avatars\DeleteAvatarAction;
 use Strava\Actions\Avatars\GetAvatarAction;
 use Strava\Actions\Avatars\GetDefaultAvatarAction;
+use Strava\Actions\Profile\ExportProfileCsvAction;
 use Strava\Actions\Profile\UpdateProfileAction;
 use Strava\Http\Controllers\Controller;
 use Strava\Http\Requests\ChangeAvatarRequest;
@@ -71,5 +72,17 @@ class ProfileController extends Controller
         $deleteAvatarAction->execute($user->id);
 
         return UserResource::make($user);
+    }
+
+    public function exportCSV(Request $request, ExportProfileCsvAction $exportProfileCsvAction)
+    {
+        $user = $request->user();
+
+        $csv = $exportProfileCsvAction->execute($user);
+
+        return response($csv, 200, [
+            "Content-Type" => "text/csv; charset=UTF-8",
+            "Content-Disposition" => 'attachment; filename="my-data.csv"',
+        ]);
     }
 }
