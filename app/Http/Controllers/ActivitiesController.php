@@ -25,7 +25,6 @@ class ActivitiesController extends Controller
         $query = Activity::query()->where("user_id", $user->id);
 
         $query = $sortHelper->sort($query, ["activity_type", "created_at", "distance_m", "duration_s", "id"], []);
-        $query = $sortHelper->search($query, "name");
         $query = $this->filterDate($query, $request);
         $query = $this->filterType($query, $request);
         $query = $this->filterDistance($query, $request);
