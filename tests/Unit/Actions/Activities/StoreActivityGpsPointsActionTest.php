@@ -35,6 +35,7 @@ class StoreActivityGpsPointsActionTest extends TestCase
             "duration_s" => 10,
             "distance_m" => 10,
             "activity_type" => "walk",
+            "started_at" => now(),
         ]);
 
         $action = new StoreActivityGpsPointsAction();
@@ -98,6 +99,7 @@ class StoreActivityGpsPointsActionTest extends TestCase
             "duration_s" => 100,
             "distance_m" => 1000,
             "activity_type" => "run",
+            "started_at" => now(),
         ]);
 
         $action = new StoreActivityGpsPointsAction();

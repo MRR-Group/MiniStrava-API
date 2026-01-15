@@ -26,6 +26,7 @@ class UserTest extends TestCase
             "duration_s" => 1,
             "distance_m" => 1,
             "activity_type" => "walk",
+            "started_at" => now(),
         ]);
 
         $a2 = Activity::query()->create([
@@ -35,6 +36,7 @@ class UserTest extends TestCase
             "duration_s" => 2,
             "distance_m" => 2,
             "activity_type" => "other",
+            "started_at" => now(),
         ]);
 
         $ids = $user->activities()->pluck("id")->all();

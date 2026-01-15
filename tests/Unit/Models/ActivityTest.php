@@ -24,6 +24,7 @@ class ActivityTest extends TestCase
             "duration_s" => 1200,
             "distance_m" => 1500,
             "activity_type" => "walk",
+            "started_at" => now(),
         ]);
 
         $this->assertTrue($activity->user->is($user));
@@ -40,6 +41,7 @@ class ActivityTest extends TestCase
             "duration_s" => 120,
             "distance_m" => 1500,
             "activity_type" => "run",
+            "started_at" => now(),
         ]);
 
         $this->assertSame(url("/api/activities/{$activity->id}/photo"), $activity->photo);
@@ -56,6 +58,7 @@ class ActivityTest extends TestCase
             "duration_s" => "120",
             "distance_m" => "1500",
             "activity_type" => "run",
+            "started_at" => now(),
         ]);
 
         $activity->refresh();

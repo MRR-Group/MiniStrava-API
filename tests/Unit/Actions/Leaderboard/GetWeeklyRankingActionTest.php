@@ -32,6 +32,7 @@ class GetWeeklyRankingActionTest extends TestCase
                 "activity_type" => "run",
                 "created_at" => Carbon::parse("2026-01-02 10:00:00"),
                 "updated_at" => Carbon::parse("2026-01-02 10:00:00"),
+                "started_at" => now(),
             ],
             [
                 "user_id" => $u1->id,
@@ -42,6 +43,7 @@ class GetWeeklyRankingActionTest extends TestCase
                 "activity_type" => "walk",
                 "created_at" => Carbon::parse("2026-01-03 10:00:00"),
                 "updated_at" => Carbon::parse("2026-01-03 10:00:00"),
+                "started_at" => now(),
             ],
             [
                 "user_id" => $u2->id,
@@ -52,6 +54,7 @@ class GetWeeklyRankingActionTest extends TestCase
                 "activity_type" => "ride",
                 "created_at" => Carbon::parse("2026-01-02 10:00:00"),
                 "updated_at" => Carbon::parse("2026-01-02 10:00:00"),
+                "started_at" => now(),
             ],
             [
                 "user_id" => $u3->id,
@@ -62,6 +65,7 @@ class GetWeeklyRankingActionTest extends TestCase
                 "activity_type" => "other",
                 "created_at" => Carbon::parse("2025-12-25 10:00:00"),
                 "updated_at" => Carbon::parse("2025-12-25 10:00:00"),
+                "started_at" => now(),
             ],
         ]);
 
@@ -94,6 +98,7 @@ class GetWeeklyRankingActionTest extends TestCase
                 "activity_type" => "run",
                 "created_at" => Carbon::parse("2026-01-02 10:00:00"),
                 "updated_at" => Carbon::parse("2026-01-02 10:00:00"),
+                "started_at" => now(),
             ],
             [
                 "user_id" => $u2->id,
@@ -104,6 +109,7 @@ class GetWeeklyRankingActionTest extends TestCase
                 "activity_type" => "walk",
                 "created_at" => Carbon::parse("2026-01-02 10:00:00"),
                 "updated_at" => Carbon::parse("2026-01-02 10:00:00"),
+                "started_at" => now(),
             ],
         ]);
 
@@ -137,6 +143,7 @@ class GetWeeklyRankingActionTest extends TestCase
                 "activity_type" => "run",
                 "created_at" => Carbon::parse("2026-01-07 23:59:59"),
                 "updated_at" => Carbon::parse("2026-01-07 23:59:59"),
+                "started_at" => now(),
             ],
         ]);
 
