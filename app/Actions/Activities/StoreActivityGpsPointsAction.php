@@ -22,7 +22,7 @@ class StoreActivityGpsPointsAction
         foreach ($points as $i => $p) {
             $rows[] = [
                 "activity_id" => (string)$activityId,
-                "seq" => isset($p["seq"]) ? (int)$p["seq"] : ($i + 1),
+                "seq" => (int)$p["seq"],
                 "lat" => (float)$p["lat"],
                 "lng" => (float)$p["lng"],
                 "alt_m" => array_key_exists("alt_m", $p) ? ($p["alt_m"] !== null ? (float)$p["alt_m"] : null) : null,
