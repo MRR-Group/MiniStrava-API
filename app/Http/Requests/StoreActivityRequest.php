@@ -36,7 +36,6 @@ class StoreActivityRequest extends FormRequest
             "photo" => ["image", "mimes:png", "max:4096"],
 
             "gps_points" => ["nullable", "array", "max:20000"],
-            "gps_points.*.seq" => ["required", "integer", "min:1"],
             "gps_points.*.lat" => ["required", "numeric", "between:-90,90"],
             "gps_points.*.lng" => ["required", "numeric", "between:-180,180"],
             "gps_points.*.alt_m" => ["nullable", "numeric"],
