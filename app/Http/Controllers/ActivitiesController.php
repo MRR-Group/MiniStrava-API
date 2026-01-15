@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Strava\Actions\Activities\CreateActivityAction;
 use Strava\Actions\Activities\GetActivityPhotoAction;
+use Strava\Actions\Activities\StoreActivityGpsPointsAction;
 use Strava\Actions\Activities\StoreActivityPhotoAction;
 use Strava\Helpers\SortHelper;
 use Strava\Http\Requests\StoreActivityRequest;
@@ -43,25 +45,45 @@ class ActivitiesController extends Controller
             ->where("user_id", $user->id)
             ->findOrFail($id);
 
-        return new ActivityResource($activity);
+        return ActivityResource::make(
+            $activity->load("gpsPoints"),
+        );
     }
 
     public function store(
         StoreActivityRequest $request,
         CreateActivityAction $createActivityAction,
         StoreActivityPhotoAction $storeActivityPhotoAction,
+        StoreActivityGpsPointsAction $storeActivityGpsPointsAction,
     ): ActivityResource {
         $validated = $request->validated();
         $user = $request->user();
         $photo = $request->file("photo");
 
-        $activity = $createActivityAction->execute($user->id, $validated);
+        $activity = DB::transaction(function () use (
+            $createActivityAction,
+            $storeActivityPhotoAction,
+            $storeActivityGpsPointsAction,
+            $user,
+            $validated,
+            $photo
+        ) {
+            $activity = $createActivityAction->execute($user->id, $validated);
 
-        if ($photo) {
-            $storeActivityPhotoAction->execute($photo, $activity->id);
-        }
+            if (!empty($validated["gps_points"] ?? null)) {
+                $storeActivityGpsPointsAction->execute($activity->id, $validated["gps_points"]);
+            }
 
-        return ActivityResource::make($activity);
+            if ($photo) {
+                $storeActivityPhotoAction->execute($photo, $activity->id);
+            }
+
+            return $activity;
+        });
+
+        return ActivityResource::make(
+            $activity->load("gpsPoints"),
+        );
     }
 
     public function getPhoto(int $id, Request $request, GetActivityPhotoAction $getActivityPhotoAction): Response
