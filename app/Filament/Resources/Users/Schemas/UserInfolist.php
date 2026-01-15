@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Strava\Filament\Resources\Users\Schemas;
 
+use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 
@@ -14,6 +15,9 @@ class UserInfolist
         return $schema
             ->components([
                 TextEntry::make("name"),
+                IconEntry::make("has_premium")
+                    ->label("Premium")
+                    ->boolean(),
                 TextEntry::make("first_name")
                     ->placeholder("-"),
                 TextEntry::make("last_name")

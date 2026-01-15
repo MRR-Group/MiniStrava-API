@@ -8,6 +8,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 use Strava\Enums\Gender;
 
@@ -38,6 +39,9 @@ class UserForm
                     ->options(Gender::class)
                     ->default("male")
                     ->required(),
+                Toggle::make("has_premium")
+                    ->label("Premium")
+                    ->default(false),
             ]);
     }
 }
