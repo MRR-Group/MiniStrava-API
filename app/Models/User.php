@@ -47,10 +47,12 @@ class User extends Authenticatable
         "height",
         "weight",
         "gender",
+        "has_premium",
     ];
     protected $hidden = [
         "password",
         "remember_token",
+        "has_premium",
     ];
 
     /**

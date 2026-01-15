@@ -27,9 +27,6 @@ class UserForm
                     ->email()
                     ->required(),
                 DateTimePicker::make("email_verified_at"),
-                TextInput::make("password")
-                    ->password()
-                    ->required(),
                 DatePicker::make("birth_date"),
                 TextInput::make("height")
                     ->numeric(),
@@ -37,8 +34,7 @@ class UserForm
                     ->numeric(),
                 Select::make("gender")
                     ->options(Gender::class)
-                    ->default("male")
-                    ->required(),
+                    ->default("male"),
                 Toggle::make("has_premium")
                     ->label("Premium")
                     ->default(false),
