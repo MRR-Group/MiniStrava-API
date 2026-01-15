@@ -38,7 +38,7 @@ class UsersTable
                 TextColumn::make("weight")
                     ->numeric()
                     ->sortable(),
-                TextColumn::make("gender")
+                TextColumn::make("has_premium")
                     ->badge()
                     ->searchable(),
                 TextColumn::make("created_at")
