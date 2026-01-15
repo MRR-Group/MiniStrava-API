@@ -39,8 +39,8 @@ class UserForm
                     ->options(Gender::class)
                     ->default("male")
                     ->required(),
-                Toggle::make('has_premium')
-                    ->label('Premium')
+                Toggle::make("has_premium")
+                    ->label("Premium")
                     ->default(false),
             ]);
     }

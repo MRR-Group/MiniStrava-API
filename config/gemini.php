@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Gemini API Key
@@ -14,7 +13,7 @@ return [
     | on Google AI Studio, at https://aistudio.google.com/app/apikey.
     */
 
-    'api_key' => env('GEMINI_API_KEY'),
+    "api_key" => env("GEMINI_API_KEY"),
 
     /*
     |--------------------------------------------------------------------------
@@ -24,7 +23,7 @@ return [
     | If you need a specific base URL for the Gemini API, you can provide it here.
     | Otherwise, leave empty to use the default value.
     */
-    'base_url' => env('GEMINI_BASE_URL'),
+    "base_url" => env("GEMINI_BASE_URL"),
 
     /*
     |--------------------------------------------------------------------------
@@ -35,5 +34,5 @@ return [
     | for a response. By default, the client will time out after 30 seconds.
     */
 
-    'request_timeout' => env('GEMINI_REQUEST_TIMEOUT', 30),
+    "request_timeout" => env("GEMINI_REQUEST_TIMEOUT", 30),
 ];

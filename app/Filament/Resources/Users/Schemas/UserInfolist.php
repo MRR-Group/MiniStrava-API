@@ -15,8 +15,8 @@ class UserInfolist
         return $schema
             ->components([
                 TextEntry::make("name"),
-                IconEntry::make('has_premium')
-                    ->label('Premium')
+                IconEntry::make("has_premium")
+                    ->label("Premium")
                     ->boolean(),
                 TextEntry::make("first_name")
                     ->placeholder("-"),

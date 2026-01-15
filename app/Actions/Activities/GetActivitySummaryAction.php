@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Strava\Actions\Activities;
 
 use Gemini\Client;
+use JsonException;
 use Strava\Models\Activity;
 use Strava\Models\User;
 
 class GetActivitySummaryAction
 {
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function execute(User $user, Activity $activity): string
     {
@@ -20,31 +21,31 @@ class GetActivitySummaryAction
         }
 
         $user->loadCount([
-            'activities as activities_last_7_days_count' => fn ($q) => $q->where('started_at', '>=', now()->subDays(7)),
-            'activities as activities_last_30_days_count' => fn ($q) => $q->where('started_at', '>=', now()->subDays(30)),
+            "activities as activities_last_7_days_count" => fn($q) => $q->where("started_at", ">=", now()->subDays(7)),
+            "activities as activities_last_30_days_count" => fn($q) => $q->where("started_at", ">=", now()->subDays(30)),
         ]);
 
         $avgPaceSecPerKm = $activity->distance_m > 0
-            ? (int) round($activity->duration_s / ($activity->distance_m / 1000))
+            ? (int)round($activity->duration_s / ($activity->distance_m / 1000))
             : null;
 
         $trainingData = [
-            'user' => [
-                'birth_date' => $user->birth_date ?? null,
-                'height' => $user->height ?? null,
-                'weight' => $user->weight ?? null,
-                'created_at' => optional($user->created_at)?->toDateTimeString(),
-                'activities_last_7_days_count' => $user->activities_last_7_days_count ?? null,
-                'activities_last_30_days_count' => $user->activities_last_30_days_count ?? null,
+            "user" => [
+                "birth_date" => $user->birth_date ?? null,
+                "height" => $user->height ?? null,
+                "weight" => $user->weight ?? null,
+                "created_at" => optional($user->created_at)?->toDateTimeString(),
+                "activities_last_7_days_count" => $user->activities_last_7_days_count ?? null,
+                "activities_last_30_days_count" => $user->activities_last_30_days_count ?? null,
             ],
-            'activity' => [
-                'title' => $activity->title,
-                'notes' => $activity->notes,
-                'type' => $activity->activity_type?->value ?? $activity->activity_type,
-                'started_at' => optional($activity->started_at)?->toDateTimeString(),
-                'duration_s' => $activity->duration_s,
-                'distance_m' => $activity->distance_m,
-                'avg_pace_sec_per_km' => $avgPaceSecPerKm,
+            "activity" => [
+                "title" => $activity->title,
+                "notes" => $activity->notes,
+                "type" => $activity->activity_type?->value ?? $activity->activity_type,
+                "started_at" => optional($activity->started_at)?->toDateTimeString(),
+                "duration_s" => $activity->duration_s,
+                "distance_m" => $activity->distance_m,
+                "avg_pace_sec_per_km" => $avgPaceSecPerKm,
             ],
         ];
 
@@ -70,10 +71,10 @@ class GetActivitySummaryAction
             PROMPT;
 
         $client = app(Client::class);
-        $model = $client->generativeModel('models/gemini-2.5-flash');
+        $model = $client->generativeModel("models/gemini-2.5-flash");
         $result = $model->generateContent($prompt);
 
-        $summary = trim((string) $result->text());
+        $summary = trim((string)$result->text());
 
         $activity->summary = $summary;
         $activity->save();
@@ -82,13 +83,13 @@ class GetActivitySummaryAction
     }
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     private function toJsonForPrompt(array $data): string
     {
-        return (string) json_encode(
+        return (string)json_encode(
             $data,
-            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR
+            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
         );
     }
 }

@@ -92,13 +92,13 @@ class ActivitiesController extends Controller
     {
         $user = $request->user();
 
-        if(!$user->has_premium){
+        if (!$user->has_premium) {
             abort(402);
         }
         $summary = $getActivitySummaryAction->execute($user, $activity);
 
         return response()->json([
-            'summary' => $summary,
+            "summary" => $summary,
         ]);
     }
 
