@@ -9,6 +9,8 @@ MiniStrava is a lightweight fitness-tracking system composed of a mobile app (An
 - Redis
 
 ## Local development
+```
 cp .env.example .env
 task init
 task vite
+```
