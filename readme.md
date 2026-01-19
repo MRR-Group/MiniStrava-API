@@ -1,16 +1,17 @@
 # @MRR/MiniStravaAPI
 
 ## About
-MiniStrava is a lightweight fitness-tracking system composed of a mobile app (Android/iOS), a web admin panel, and a REST API. Users record runs, rides, and walks with GPS; view routes, pace, distance, and basic stats; name activities, add notes/photos, and browse/filter history with weekly leaderboards. Admins manage users and activities and see global stats. The API includes OpenAPI docs at /api/documentation and supports GPX export (with optional CSV export and push notifications).
+Laravel 11 + Filament backend dla aplikacji mobilnej MiniStrava. Oferuje auth (rejestracja, logowanie, reset hasła), aktywności z GPS (lista, szczegóły, zdjęcia, podsumowania, eksport GPX/CSV), profile użytkowników (edycja, avatar, eksport CSV), statystyki i rankingi, zarządzanie tokenami push oraz dokumentację OpenAPI pod `/api/documentation`.
 
 ## Stack
 - Laravel 11
 - PostgreSQL
-- Redis
+- Redis (cache, kolejki, push tokens)
+- Filament (panel admina)
 
 ## Local development
-```
+```bash
 cp .env.example .env
 task init
-task vite
+task run         
 ```
